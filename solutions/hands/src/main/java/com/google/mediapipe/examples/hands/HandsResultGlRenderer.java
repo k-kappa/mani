@@ -14,7 +14,15 @@
 
 package com.google.mediapipe.examples.hands;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.opengl.GLES20;
+import android.opengl.GLUtils;
+import android.util.Log;
+import android.widget.TextView;
+
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
@@ -36,7 +44,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
   private static final float HOLLOW_CIRCLE_RADIUS = 0.01f;
   private static final float[] LEFT_HAND_LANDMARK_COLOR = new float[] {1f, 0.2f, 0.2f, 1f};
   private static final float[] RIGHT_HAND_LANDMARK_COLOR = new float[] {0.2f, 1f, 0.2f, 1f};
-  private static final float LANDMARK_RADIUS = 0.008f;
+  private static final float LANDMARK_RADIUS = 0.05f;
   private static final int NUM_SEGMENTS = 120;
   private static final String VERTEX_SHADER =
       "uniform mat4 uProjectionMatrix;\n"
@@ -101,9 +109,38 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             landmark.getX(),
             landmark.getY(),
             isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
+        drawDistanceLine(result.multiHandLandmarks().get(i).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
+        drawCircle(
+                0.2f,
+                0.2f,
+                LEFT_HAND_LANDMARK_COLOR);
       }
     }
+
   }
+
+  //_____________________________________________________
+  // nuovo codice test scrive su feed camera
+  private void drawDistanceLine(List<NormalizedLandmark> handLandmarkList, float[] colorArray) {
+    GLES20.glUniform4fv(colorHandle, 1, colorArray, 0);
+    for (Hands.Connection c : Hands.HAND_CONNECTIONS) {
+      NormalizedLandmark start = handLandmarkList.get(c.start());
+      NormalizedLandmark end = handLandmarkList.get(c.end());
+      //float[] vertex = {0.1f, 0.1f, 0.1f + (start.getX() - end.getX()), 0.1f + (start.getY() - end.getY())};
+      float[] vertex = {0f, 0f, 2f, 2f};
+      Log.i("drawLine", "start: " + end.getX() + " " + end.getY());
+      FloatBuffer vertexBuffer =
+              ByteBuffer.allocateDirect(vertex.length * 4)
+                      .order(ByteOrder.nativeOrder())
+                      .asFloatBuffer()
+                      .put(vertex);
+      vertexBuffer.position(0);
+      GLES20.glEnableVertexAttribArray(positionHandle);
+      GLES20.glVertexAttribPointer(positionHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
+      GLES20.glDrawArrays(GLES20.GL_LINES, 0, 2);
+    }
+  }
+  //_____________________________________________________
 
   /**
    * Deletes the shader program.
