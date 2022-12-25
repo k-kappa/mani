@@ -124,7 +124,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
         float y = 0.05f;
         for (int i = 8; i < 21; i += 4) {
             Landmark finger = handLandmarkList.get(i);
-            float distance = (float) Math.sqrt(Math.pow(thumb.getX() - finger.getX(), 2) + Math.pow(thumb.getY() - finger.getY(), 2));
+            float distance = (float) Math.sqrt(Math.pow(finger.getX() - thumb.getX(), 2) + Math.pow(finger.getY() - thumb.getY(), 2) + Math.pow(finger.getZ() - thumb.getZ(), 2));
             float[] vertex = {x + (0.05f * ((i - 8) / 4)), y, x + (0.05f * ((i - 8) / 4)), y + distance * 2};
             FloatBuffer vertexBuffer =
                     ByteBuffer.allocateDirect(vertex.length * 4)
