@@ -5,67 +5,67 @@
 5    android:versionName="1.0" >
 6
 7    <uses-sdk
-7-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:5:3-7:39
+7-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:5:5-7:41
 8        android:minSdkVersion="21"
-8-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:6:7-33
+8-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:6:9-35
 9        android:targetSdkVersion="33" />
-9-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:7:7-36
+9-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:7:9-38
 10
 11    <!-- For loading images from gallery -->
 12    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-12-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:10:3-78
-12-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:10:20-75
+12-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:10:5-80
+12-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:10:22-77
 13    <!-- For using the camera -->
 14    <uses-permission android:name="android.permission.CAMERA" />
-14-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:12:3-63
-14-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:12:20-60
+14-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:12:5-65
+14-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:12:22-62
 15
 16    <uses-feature android:name="android.hardware.camera" />
-16-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:13:3-58
-16-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:13:17-55
+16-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:13:5-60
+16-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:13:19-57
 17    <!-- For logging solution events -->
 18    <uses-permission android:name="android.permission.INTERNET" />
-18-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:15:3-65
-18-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:15:20-62
+18-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:15:5-67
+18-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:15:22-64
 19    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-19-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:16:3-77
-19-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:16:20-74
+19-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:16:5-79
+19-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:16:22-76
 20
 21    <application
-21-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:18:3-34:17
+21-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:18:5-35:19
 22        android:allowBackup="true"
-22-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:19:7-33
+22-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:19:9-35
 23        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
 23-->[androidx.core:core:1.5.0] /home/riccardoob/.gradle/caches/transforms-3/1c6bf066d86cb24cdbec24ff431f26f8/transformed/core-1.5.0/AndroidManifest.xml:24:18-86
 24        android:debuggable="true"
 25        android:icon="@mipmap/ic_launcher"
-25-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:20:7-41
+25-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:20:9-43
 26        android:label="MediaPipe Hands"
-26-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:21:7-38
+26-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:21:9-40
 27        android:roundIcon="@mipmap/ic_launcher_round"
-27-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:22:7-52
+27-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:22:9-54
 28        android:supportsRtl="true"
-28-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:23:7-33
+28-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:23:9-35
 29        android:testOnly="true"
 30        android:theme="@style/AppTheme" >
-30-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:24:7-38
+30-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:24:9-40
 31        <activity
-31-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:25:5-33:16
+31-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:25:9-34:20
 32            android:name="com.google.mediapipe.examples.hands.MainActivity"
-32-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:25:15-43
+32-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:26:13-41
 33            android:exported="true"
-33-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:27:9-32
+33-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:28:13-36
 34            android:screenOrientation="portrait" >
-34-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:26:15-51
+34-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:27:13-49
 35            <intent-filter>
-35-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:28:7-32:23
+35-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:29:13-33:29
 36                <action android:name="android.intent.action.MAIN" />
-36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:29:9-61
-36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:29:17-58
+36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:17-69
+36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:25-66
 37
 38                <category android:name="android.intent.category.LAUNCHER" />
-38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:31:9-69
-38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:31:19-66
+38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:17-77
+38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:27-74
 39            </intent-filter>
 40        </activity>
 41

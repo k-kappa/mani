@@ -17,6 +17,8 @@ package com.google.mediapipe.examples.hands;
 import android.opengl.GLES20;
 import android.util.Log;
 
+import com.google.mediapipe.formats.proto.LandmarkProto.LandmarkList;
+import com.google.mediapipe.formats.proto.LandmarkProto.Landmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
@@ -41,7 +43,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
     private static final float HOLLOW_CIRCLE_RADIUS = 0.01f;
     private static final float[] LEFT_HAND_LANDMARK_COLOR = new float[]{1f, 0.2f, 0.2f, 1f};
     private static final float[] RIGHT_HAND_LANDMARK_COLOR = new float[]{0.2f, 1f, 0.2f, 1f};
-    private static final float LANDMARK_RADIUS = 0.05f;
+    private static final float LANDMARK_RADIUS = 0.008f;
     private static final int NUM_SEGMENTS = 120;
     private static final String VERTEX_SHADER =
             "uniform mat4 uProjectionMatrix;\n"
@@ -90,6 +92,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
         GLES20.glLineWidth(CONNECTION_THICKNESS);
 
         int numHands = result.multiHandLandmarks().size();
+        List<LandmarkList> landmarks = result.multiHandWorldLandmarks();
         for (int i = 0; i < numHands; ++i) {
             boolean isLeftHand = result.multiHandedness().get(i).getLabel().equals("Left");
             drawConnections(
@@ -106,11 +109,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                         landmark.getX(),
                         landmark.getY(),
                         isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
-                drawDistanceLine(result.multiHandLandmarks().get(i).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
-                drawCircle(
-                        0.2f,
-                        0.2f,
-                        LEFT_HAND_LANDMARK_COLOR);
+                drawDistanceLine(landmarks.get(0).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
             }
         }
 
@@ -118,14 +117,15 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
 
     //_____________________________________________________
     // nuovo codice test scrive su feed camera
-    private void drawDistanceLine(List<NormalizedLandmark> handLandmarkList, float[] colorArray) {
+    private void drawDistanceLine(List<Landmark> handLandmarkList, float[] colorArray) {
         GLES20.glUniform4fv(colorHandle, 1, colorArray, 0);
-        for (Hands.Connection c : Hands.HAND_CONNECTIONS) {
-            NormalizedLandmark start = handLandmarkList.get(c.start());
-            NormalizedLandmark end = handLandmarkList.get(c.end());
-            //float[] vertex = {0.1f, 0.1f, 0.1f + (start.getX() - end.getX()), 0.1f + (start.getY() - end.getY())};
-            float[] vertex = {0f, 0f, 2f, 2f};
-            Log.i("drawLine", "start: " + end.getX() + " " + end.getY());
+        Landmark thumb = handLandmarkList.get(4);
+        float x = 0.25f;
+        float y = 0.05f;
+        for (int i = 8; i < 21; i += 4) {
+            Landmark finger = handLandmarkList.get(i);
+            float distance = (float) Math.sqrt(Math.pow(thumb.getX() - finger.getX(), 2) + Math.pow(thumb.getY() - finger.getY(), 2));
+            float[] vertex = {x + (0.05f * ((i - 8) / 4)), y, x + (0.05f * ((i - 8) / 4)), y + distance * 2};
             FloatBuffer vertexBuffer =
                     ByteBuffer.allocateDirect(vertex.length * 4)
                             .order(ByteOrder.nativeOrder())
