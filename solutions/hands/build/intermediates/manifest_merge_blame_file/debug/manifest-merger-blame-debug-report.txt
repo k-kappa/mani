@@ -46,57 +46,58 @@
 27-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:22:9-54
 28        android:supportsRtl="true"
 28-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:23:9-35
-29        android:theme="@style/AppTheme" >
-29-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:24:9-40
-30        <activity
-30-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:25:9-34:20
-31            android:name="com.google.mediapipe.examples.hands.MainActivity"
-31-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:26:13-41
-32            android:exported="true"
-32-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:28:13-36
-33            android:screenOrientation="portrait" >
-33-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:27:13-49
-34            <intent-filter>
-34-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:29:13-33:29
-35                <action android:name="android.intent.action.MAIN" />
-35-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:17-69
-35-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:25-66
-36
-37                <category android:name="android.intent.category.LAUNCHER" />
-37-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:17-77
-37-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:27-74
-38            </intent-filter>
-39        </activity>
-40
-41        <service
-41-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:29:9-35:19
-42            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
-42-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:30:13-103
-43            android:exported="false" >
-43-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:31:13-37
-44            <meta-data
-44-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:32:13-34:39
-45                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
-45-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:33:17-94
-46                android:value="cct" />
-46-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:34:17-36
-47        </service>
-48        <service
-48-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:26:9-30:19
-49            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
-49-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:27:13-117
-50            android:exported="false"
-50-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:28:13-37
-51            android:permission="android.permission.BIND_JOB_SERVICE" >
-51-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:29:13-69
-52        </service>
-53
-54        <receiver
-54-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:32:9-34:40
-55            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
-55-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:33:13-132
-56            android:exported="false" />
-56-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:34:13-37
-57    </application>
-58
-59</manifest>
+29        android:testOnly="true"
+30        android:theme="@style/AppTheme" >
+30-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:24:9-40
+31        <activity
+31-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:25:9-34:20
+32            android:name="com.google.mediapipe.examples.hands.MainActivity"
+32-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:26:13-41
+33            android:exported="true"
+33-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:28:13-36
+34            android:screenOrientation="portrait" >
+34-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:27:13-49
+35            <intent-filter>
+35-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:29:13-33:29
+36                <action android:name="android.intent.action.MAIN" />
+36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:17-69
+36-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:30:25-66
+37
+38                <category android:name="android.intent.category.LAUNCHER" />
+38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:17-77
+38-->/home/riccardoob/mani/solutions/hands/src/main/AndroidManifest.xml:32:27-74
+39            </intent-filter>
+40        </activity>
+41
+42        <service
+42-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:29:9-35:19
+43            android:name="com.google.android.datatransport.runtime.backends.TransportBackendDiscovery"
+43-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:30:13-103
+44            android:exported="false" >
+44-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:31:13-37
+45            <meta-data
+45-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:32:13-34:39
+46                android:name="backend:com.google.android.datatransport.cct.CctBackendFactory"
+46-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:33:17-94
+47                android:value="cct" />
+47-->[com.google.android.datatransport:transport-backend-cct:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/30e73973adb13a1659c2366f6b78ac8f/transformed/transport-backend-cct-3.1.0/AndroidManifest.xml:34:17-36
+48        </service>
+49        <service
+49-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:26:9-30:19
+50            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.JobInfoSchedulerService"
+50-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:27:13-117
+51            android:exported="false"
+51-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:28:13-37
+52            android:permission="android.permission.BIND_JOB_SERVICE" >
+52-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:29:13-69
+53        </service>
+54
+55        <receiver
+55-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:32:9-34:40
+56            android:name="com.google.android.datatransport.runtime.scheduling.jobscheduling.AlarmManagerSchedulerBroadcastReceiver"
+56-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:33:13-132
+57            android:exported="false" />
+57-->[com.google.android.datatransport:transport-runtime:3.1.0] /home/riccardoob/.gradle/caches/transforms-3/53f56a5913492ebf02d060d859427b31/transformed/transport-runtime-3.1.0/AndroidManifest.xml:34:13-37
+58    </application>
+59
+60</manifest>

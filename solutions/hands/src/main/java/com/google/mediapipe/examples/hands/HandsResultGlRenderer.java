@@ -14,11 +14,17 @@
 
 package com.google.mediapipe.examples.hands;
 
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.opengl.GLES20;
-import android.util.Log;
+import android.opengl.GLUtils;
 
-import com.google.mediapipe.formats.proto.LandmarkProto.LandmarkList;
 import com.google.mediapipe.formats.proto.LandmarkProto.Landmark;
+import com.google.mediapipe.formats.proto.LandmarkProto.LandmarkList;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
@@ -28,6 +34,7 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.List;
+
 
 /**
  * A custom implementation of {@link ResultGlRenderer} to render {@link HandsResult}.
@@ -61,6 +68,8 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
     private int positionHandle;
     private int projectionMatrixHandle;
     private int colorHandle;
+
+    public String log = "";
 
     private int loadShader(int type, String shaderCode) {
         int shader = GLES20.glCreateShader(type);
@@ -111,20 +120,34 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                         isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
                 drawDistanceLine(landmarks.get(0).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
             }
+            log = "Thumb - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(4)) + "\n";
+            log += "Index - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(8)) + "\n";
+            log += "Middle - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(12)) + "\n";
+            log += "Ring - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(16)) + "\n";
+            log += "Pinky - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(20)) + "\n";
         }
 
+    }
+
+    private String getDistance(Landmark landmark, Landmark landmark1) {
+        return this.getDistance(landmark, landmark1, 4);
+    }
+
+    private String getDistance(Landmark landmark, Landmark landmark1, int maxDecimalPlaces) {
+        double distance = Math.sqrt(Math.pow(landmark.getX() - landmark1.getX(), 2) + Math.pow(landmark.getY() - landmark1.getY(), 2) + Math.pow(landmark.getZ() - landmark1.getZ(), 2));
+        return String.format("%." + maxDecimalPlaces + "f", distance);
     }
 
     //_____________________________________________________
     // nuovo codice test scrive su feed camera
     private void drawDistanceLine(List<Landmark> handLandmarkList, float[] colorArray) {
         GLES20.glUniform4fv(colorHandle, 1, colorArray, 0);
-        Landmark thumb = handLandmarkList.get(4);
+        Landmark wrist = handLandmarkList.get(0);
         float x = 0.25f;
         float y = 0.05f;
         for (int i = 8; i < 21; i += 4) {
             Landmark finger = handLandmarkList.get(i);
-            float distance = (float) Math.sqrt(Math.pow(finger.getX() - thumb.getX(), 2) + Math.pow(finger.getY() - thumb.getY(), 2) + Math.pow(finger.getZ() - thumb.getZ(), 2));
+            float distance = (float) Math.sqrt(Math.pow(finger.getX() - wrist.getX(), 2) + Math.pow(finger.getY() - wrist.getY(), 2) + Math.pow(finger.getZ() - wrist.getZ(), 2));
             float[] vertex = {x + (0.05f * ((i - 8) / 4)), y, x + (0.05f * ((i - 8) / 4)), y + distance * 2};
             FloatBuffer vertexBuffer =
                     ByteBuffer.allocateDirect(vertex.length * 4)

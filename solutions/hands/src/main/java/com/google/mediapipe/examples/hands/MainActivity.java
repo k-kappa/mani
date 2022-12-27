@@ -16,13 +16,16 @@ package com.google.mediapipe.examples.hands;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -38,6 +41,7 @@ import com.google.mediapipe.solutions.hands.HandLandmark;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.ThumbUpGesture;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -278,6 +282,22 @@ public class MainActivity extends AppCompatActivity {
      * Sets up core workflow for streaming mode.
      */
     private void setupStreamingModePipeline(InputSource inputSource) {
+        HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
+
+        ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+        TextView wristLog = new TextView(this);
+        wristLog.setText(String.valueOf(handsResultGlRenderer.log));
+        wristLog.setTextSize(20);
+        wristLog.setTextColor(Color.RED);
+        wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+        TextView thumbUp = new TextView(this);
+        thumbUp.setText("Thumb Up!!!   \n\n");
+        thumbUp.setTextSize(30);
+        thumbUp.setTextColor(Color.RED);
+        thumbUp.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+
+
+
         this.inputSource = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
         hands =
@@ -301,11 +321,23 @@ public class MainActivity extends AppCompatActivity {
         // Initializes a new Gl surface view with a user-defined HandsResultGlRenderer.
         glSurfaceView =
                 new SolutionGlSurfaceView<>(this, hands.getGlContext(), hands.getGlMajorVersion());
-        glSurfaceView.setSolutionResultRenderer(new HandsResultGlRenderer());
+        glSurfaceView.setSolutionResultRenderer(handsResultGlRenderer);
         glSurfaceView.setRenderInputImage(true);
         hands.setResultListener(
                 handsResult -> {
                     logWristLandmark(handsResult, /*showPixelValues=*/ false);
+                    MainActivity.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            wristLog.setText(handsResultGlRenderer.log);
+                            if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
+                                Log.e("Gesture", "Thumb Up");
+                                thumbUp.setTextColor(Color.GREEN);
+                            } else {
+                                thumbUp.setTextColor(Color.RED);
+                            }
+                        }
+                    });
                     glSurfaceView.setRenderData(handsResult);
                     glSurfaceView.requestRender();
                 });
@@ -321,6 +353,11 @@ public class MainActivity extends AppCompatActivity {
         imageView.setVisibility(View.GONE);
         frameLayout.removeAllViewsInLayout();
         frameLayout.addView(glSurfaceView);
+
+        // add text view to frame layout
+        frameLayout.addView(wristLog);
+        frameLayout.addView(thumbUp);
+
         glSurfaceView.setVisibility(View.VISIBLE);
         frameLayout.requestLayout();
     }
