@@ -9,4 +9,8 @@ public class Utils {
     public static boolean isBetween(float value, float low, float high) {
         return value >= low && value <= high;
     }
+
+    public static boolean isInsideSphere(float point_x,float point_y,float point_z,float centre_X,float centre_y,float centre_z,float radius){
+        return (point_x-centre_X)*(point_x-centre_X)+(point_y-centre_y)*(point_y-centre_y)+(point_z+centre_z)*(point_z+centre_z)<radius*radius;
+    }
 }

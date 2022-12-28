@@ -31,11 +31,27 @@ public class ThumbUpGesture implements IHandGesture {
             float wristRingDistance = Utils.getDistance(ring.getX(), ring.getY(), ring.getZ(), wrist.getX(), wrist.getY(), wrist.getZ());
             float wristPinkyDistance = Utils.getDistance(pinky.getX(), pinky.getY(), pinky.getZ(), wrist.getX(), wrist.getY(), wrist.getZ());
 
-            if (Utils.isBetween(wristThumbDistance, thumbLow, thumbHigh) &&
-                    Utils.isBetween(wristIndexDistance, indexLow, indexHigh) &&
-                    Utils.isBetween(wristMiddleDistance, middleLow, middleHigh) &&
-                    Utils.isBetween(wristRingDistance, ringLow, ringHigh) &&
-                    Utils.isBetween(wristPinkyDistance, pinkyLow, pinkyHigh)) {
+            //Raccolgo i punti di mio interesse
+            LandmarkProto.Landmark point_4 =landmarkList.get(0).getLandmark(4);
+            LandmarkProto.Landmark point_8 =landmarkList.get(0).getLandmark(8);
+            LandmarkProto.Landmark point_12 =landmarkList.get(0).getLandmark(12);
+            LandmarkProto.Landmark point_16 =landmarkList.get(0).getLandmark(16);
+            LandmarkProto.Landmark point_20 =landmarkList.get(0).getLandmark(20);
+            LandmarkProto.Landmark point_5 =landmarkList.get(0).getLandmark(5);
+            LandmarkProto.Landmark point_6 =landmarkList.get(0).getLandmark(6);
+            //if (Utils.isBetween(wristThumbDistance, thumbLow, thumbHigh) &&
+            //        Utils.isBetween(wristIndexDistance, indexLow, indexHigh) &&
+            //        Utils.isBetween(wristMiddleDistance, middleLow, middleHigh) &&
+            //        Utils.isBetween(wristRingDistance, ringLow, ringHigh) &&
+            //        Utils.isBetween(wristPinkyDistance, pinkyLow, pinkyHigh)) {
+            //    return true;
+            //}
+            //calcolo il raggio della sfera usando la falange prossimale(punto 5 e 6)
+            float radius = Utils.getDistance(point_5.getX(),point_5.getY(),point_5.getZ(),point_6.getX(),point_6.getY(),point_6.getZ());
+
+            if(/*Utils.isInsideSphere(point_6.getX(),point_6.getY(),point_6.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //verifico se il punto 6 e 5 si trovano all'interno
+            &&*/ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //mentre verifico che il pollice(punto 4) si trovi al di fuori di tale sfera
+                    && !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius)){
                 return true;
             }
         }
