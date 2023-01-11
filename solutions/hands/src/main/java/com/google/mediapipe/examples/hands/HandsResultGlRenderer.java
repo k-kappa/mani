@@ -30,6 +30,8 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.IHandGesture;
+import com.hands.gesture.ThumbUpGesture;
 import com.hands.utils.Utils;
 
 import java.nio.ByteBuffer;
@@ -52,6 +54,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
     private static final float HOLLOW_CIRCLE_RADIUS = 0.01f;
     private static final float[] LEFT_HAND_LANDMARK_COLOR = new float[]{1f, 0.2f, 0.2f, 1f};
     private static final float[] RIGHT_HAND_LANDMARK_COLOR = new float[]{0.2f, 1f, 0.2f, 1f};
+    private static final float[] DRAWING_COLOR = new float[]{1f, 1f, 1f, 1f};
     private static final float LANDMARK_RADIUS = 0.008f;
     private static final int NUM_SEGMENTS = 120;
     private static final String VERTEX_SHADER =
@@ -122,6 +125,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                         isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
                 drawDistanceLine(landmarks.get(0).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
             }
+
             ///////////
             LandmarkProto.Landmark point_4 =landmarks.get(0).getLandmark(4);
             LandmarkProto.Landmark point_5 =landmarks.get(0).getLandmark(5);
@@ -131,14 +135,23 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             float radius = Utils.getDistance(point_5.getX(),point_5.getY(),point_5.getZ(),point_7.getX(),point_7.getY(),point_7.getZ());
             //////////
 
+            drawCircle(point_8.getX(),point_8.getY(),DRAWING_COLOR);
+
             //log = "Thumb - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(4)) + "\n";
             //log += "Index - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(8)) + "\n";
             //log += "Middle - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(12)) + "\n";
             //log += "Ring - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(16)) + "\n";
             //log += "Pinky - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(20)) + "\n";
-            log = "x: "+landmarks.get(0).getLandmark(8).getX()+",y: "+landmarks.get(0).getLandmark(8).getY()+",z: "+landmarks.get(0).getLandmark(8).getZ();
-            log += "\n1->: "+ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);//verifico a video come si comportano le variabili booleane per avere un riscontro immediato
-            log += "\n2->: "+ !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);
+            //log = "x: "+landmarks.get(0).getLandmark(8).getX()+",y: "+landmarks.get(0).getLandmark(8).getY()+",z: "+landmarks.get(0).getLandmark(8).getZ();
+            //log += "\n1->: "+ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);//verifico a video come si comportano le variabili booleane per avere un riscontro immediato
+            //log += "\n2->: "+ !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);
+            int numeroLivelli = 70;
+            log = "\nLVL4: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(4);
+            log += "\nLVL8: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(8);
+            log += "\nLVL12: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(12);
+            log += "\nLVL16: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(16);
+            log += "\nLVL20: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(20);
+            log += "\nLVL totali = " + numeroLivelli;
         }
 
     }

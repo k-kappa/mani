@@ -3,6 +3,7 @@ package com.hands.gesture;
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.hands.utils.Utils;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ThumbUpGesture implements IHandGesture {
@@ -49,11 +50,61 @@ public class ThumbUpGesture implements IHandGesture {
             //calcolo il raggio della sfera usando la falange prossimale(punto 5 e 6)
             float radius = Utils.getDistance(point_5.getX(),point_5.getY(),point_5.getZ(),point_6.getX(),point_6.getY(),point_6.getZ());
 
-            if(/*Utils.isInsideSphere(point_6.getX(),point_6.getY(),point_6.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //verifico se il punto 6 e 5 si trovano all'interno
-            &&*/ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //mentre verifico che il pollice(punto 4) si trovi al di fuori di tale sfera
+            //if(Utils.isInsideSphere(point_6.getX(),point_6.getY(),point_6.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //verifico se il punto 6 e 5 si trovano all'interno
+            /*&& Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius) //mentre verifico che il pollice(punto 4) si trovi al di fuori di tale sfera
                     && !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius)){
                 return true;
+            }*/
+
+
+
+           int numeroLivelli = 70;
+            int errore = 8;
+
+            //////////impronta pollice in su
+            HashMap<Integer,Integer> improntaPollice = new HashMap<Integer,Integer>();
+            improntaPollice.put(4,61);//valori rilevati empiricamente su 70 livelli totali
+            improntaPollice.put(8,34);
+            improntaPollice.put(12,48);
+            improntaPollice.put(16,43);
+            improntaPollice.put(20,39);
+
+            /////////impronta mano aperta
+            HashMap<Integer,Integer> improntaManoAperta = new HashMap<Integer,Integer>();
+            improntaManoAperta.put(4,48);//valori rilevati empiricamente su 70 livelli totali
+            improntaManoAperta.put(8,63);
+            improntaManoAperta.put(12,67);
+            improntaManoAperta.put(16,64);
+            improntaManoAperta.put(20,54);
+
+            /////////impronta OK
+            HashMap<Integer,Integer> improntaOK = new HashMap<Integer,Integer>();
+            improntaOK.put(4,53);//valori rilevati empiricamente su 70 livelli totali
+            improntaOK.put(8,40);
+            improntaOK.put(12,62);
+            improntaOK.put(16,66);
+            improntaOK.put(20,60);
+
+            /////////impronta mano "artigli"    //questa si confonde con la mano aperta...
+            HashMap<Integer,Integer> improntaArtigli = new HashMap<Integer,Integer>();
+            improntaArtigli.put(4,49);//valori rilevati empiricamente su 70 livelli totali
+            improntaArtigli.put(8,61);
+            improntaArtigli.put(12,62);
+            improntaArtigli.put(16,59);
+            improntaArtigli.put(20,49);
+
+            HashMap<Integer,Integer> improntaAnalizzata = improntaOK;
+
+            if(Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(4),improntaAnalizzata.get(4)-errore,improntaAnalizzata.get(4)+errore) &&
+                    Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(8),improntaAnalizzata.get(8)-errore,improntaAnalizzata.get(8)+errore) &&
+                    Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(12),improntaAnalizzata.get(12)-errore,improntaAnalizzata.get(12)+errore) &&
+                    Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(16),improntaAnalizzata.get(16)-errore,improntaAnalizzata.get(16)+errore) &&
+                    Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(20),improntaAnalizzata.get(20)-errore,improntaAnalizzata.get(20)+errore)){
+                return true;
+
             }
+
+
         }
         return false;
     }

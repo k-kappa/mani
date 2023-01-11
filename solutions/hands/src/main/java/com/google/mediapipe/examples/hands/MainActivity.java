@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -285,13 +286,14 @@ public class MainActivity extends AppCompatActivity {
         HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
 
         ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+
         TextView wristLog = new TextView(this);
         wristLog.setText(String.valueOf(handsResultGlRenderer.log));
         wristLog.setTextSize(20);
         wristLog.setTextColor(Color.RED);
         wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
         TextView thumbUp = new TextView(this);
-        thumbUp.setText("Thumb Up!!!   \n\n");
+        thumbUp.setText("Gesture\nriconosciuta\n\n");
         thumbUp.setTextSize(30);
         thumbUp.setTextColor(Color.RED);
         thumbUp.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
