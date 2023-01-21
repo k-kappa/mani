@@ -84,6 +84,7 @@ public class MainActivity extends AppCompatActivity {
         setupStaticImageDemoUiComponents();
         setupVideoDemoUiComponents();
         setupLiveDemoUiComponents();
+        System.out.println("prova");
     }
 
     @Override
