@@ -62,12 +62,12 @@ public class ThumbUpGesture implements IHandGesture {
             int errore = 8;
 
             //////////impronta pollice in su
-            HashMap<Integer,Integer> improntaPollice = new HashMap<Integer,Integer>();
-            improntaPollice.put(4,61);//valori rilevati empiricamente su 70 livelli totali
-            improntaPollice.put(8,34);
-            improntaPollice.put(12,48);
-            improntaPollice.put(16,43);
-            improntaPollice.put(20,39);
+            HashMap<Integer,Integer> improntaPollice = new HashMap<Integer,Integer>(); //fa fatica quando non si vedono parte delle dita
+            improntaPollice.put(4,52);//valori rilevati empiricamente su 70 livelli totali
+            improntaPollice.put(8,35);
+            improntaPollice.put(12,29);
+            improntaPollice.put(16,27);
+            improntaPollice.put(20,29);
 
             /////////impronta mano aperta
             HashMap<Integer,Integer> improntaManoAperta = new HashMap<Integer,Integer>();
@@ -93,7 +93,7 @@ public class ThumbUpGesture implements IHandGesture {
             improntaArtigli.put(16,59);
             improntaArtigli.put(20,49);
 
-            HashMap<Integer,Integer> improntaAnalizzata = improntaOK;
+            HashMap<Integer,Integer> improntaAnalizzata = improntaPollice;
 
             if(Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(4),improntaAnalizzata.get(4)-errore,improntaAnalizzata.get(4)+errore) &&
                     Utils.isBetween( Utils.returnLevelsOfFingers(numeroLivelli,landmarkList.get(0)).get(8),improntaAnalizzata.get(8)-errore,improntaAnalizzata.get(8)+errore) &&
