@@ -346,6 +346,8 @@ public class MainActivity extends AppCompatActivity {
                             if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
                                 Log.e("Gesture", "Thumb Up");
                                 thumbUp.setTextColor(Color.GREEN);
+                                //Intent intent1 = new Intent(MainActivity.this, PdfActivity.class);
+                                //startActivity(intent1);
                             } else {
                                 thumbUp.setTextColor(Color.RED);
                             }
@@ -354,6 +356,7 @@ public class MainActivity extends AppCompatActivity {
                     glSurfaceView.setRenderData(handsResult);
                     glSurfaceView.requestRender();
                 });
+
 
         // The runnable to start camera after the gl surface view is attached.
         // For video input source, videoInput.start() will be called when the video uri is available.
