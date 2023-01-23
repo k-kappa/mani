@@ -14,14 +14,7 @@
 
 package com.google.mediapipe.examples.hands;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.opengl.GLES20;
-import android.opengl.GLUtils;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.formats.proto.LandmarkProto.Landmark;
@@ -30,8 +23,7 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsResult;
-import com.hands.gesture.IHandGesture;
-import com.hands.gesture.ThumbUpGesture;
+import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
 
 import java.nio.ByteBuffer;
@@ -146,12 +138,19 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             //log += "\n1->: "+ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);//verifico a video come si comportano le variabili booleane per avere un riscontro immediato
             //log += "\n2->: "+ !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);
             int numeroLivelli = 70;
-            log = "\nLVL4: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(4);
-            log += "\nLVL8: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(8);
-            log += "\nLVL12: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(12);
-            log += "\nLVL16: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(16);
-            log += "\nLVL20: "+ Utils.returnLevelsOfFingers(numeroLivelli,landmarks.get(0)).get(20);
-            log += "\nLVL totali = " + numeroLivelli;
+            log = "\n" + HandPoints.THUMB_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_TIP);
+            log += "\n" + HandPoints.INDEX_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_TIP);
+            log += "\n" + HandPoints.MIDDLE_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_TIP);
+            log += "\n" + HandPoints.RING_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_TIP);
+            log += "\n" + HandPoints.PINKY_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_TIP);
+            //add all fingers UPPER to log message
+            log += "\n\n" + HandPoints.THUMB_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_UPPER);
+            log += "\n" + HandPoints.INDEX_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_UPPER);
+            log += "\n" + HandPoints.MIDDLE_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_UPPER);
+            log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
+            log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
+            log += "\n\n";
+
         }
 
     }

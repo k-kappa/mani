@@ -2,14 +2,17 @@ package com.hands.utils;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
 
-import java.sql.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Utils {
 
     public static float getDistance(float x1, float y1, float z1, float x2, float y2, float z2) {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
+    }
+
+    public static float getLandmarkDistance(LandmarkProto.Landmark point1, LandmarkProto.Landmark point2) {
+        return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
     public static boolean isBetween(float value, float low, float high) {
@@ -20,106 +23,116 @@ public class Utils {
         return value >= low && value <= high;
     }
 
-    public static boolean isInsideSphere(float point_x,float point_y,float point_z,float centre_X,float centre_y,float centre_z,float radius){
-        return (point_x-centre_X)*(point_x-centre_X)+(point_y-centre_y)*(point_y-centre_y)+(point_z+centre_z)*(point_z+centre_z)<radius*radius;
+    public static boolean isInsideSphere(float point_x, float point_y, float point_z, float centre_X, float centre_y, float centre_z, float radius) {
+        return (point_x - centre_X) * (point_x - centre_X) + (point_y - centre_y) * (point_y - centre_y) + (point_z + centre_z) * (point_z + centre_z) < radius * radius;
     }
 
-    public static HashMap<Integer,Integer> returnLevelsOfFingers(int quantitàLivelli, LandmarkProto.LandmarkList raccoltaPunti){//per il momento solo indice
-        LandmarkProto.Landmark point_20=raccoltaPunti.getLandmark(20);
-        LandmarkProto.Landmark point_19=raccoltaPunti.getLandmark(19);
-        LandmarkProto.Landmark point_18=raccoltaPunti.getLandmark(18);
-        LandmarkProto.Landmark point_17=raccoltaPunti.getLandmark(17);
-        LandmarkProto.Landmark point_16=raccoltaPunti.getLandmark(16);
-        LandmarkProto.Landmark point_15=raccoltaPunti.getLandmark(15);
-        LandmarkProto.Landmark point_14=raccoltaPunti.getLandmark(14);
-        LandmarkProto.Landmark point_13=raccoltaPunti.getLandmark(13);
-        LandmarkProto.Landmark point_12=raccoltaPunti.getLandmark(12);
-        LandmarkProto.Landmark point_11=raccoltaPunti.getLandmark(11);
-        LandmarkProto.Landmark point_10=raccoltaPunti.getLandmark(10);
-        LandmarkProto.Landmark point_9=raccoltaPunti.getLandmark(9);
-        LandmarkProto.Landmark point_8=raccoltaPunti.getLandmark(8);
-        LandmarkProto.Landmark point_7=raccoltaPunti.getLandmark(7);
-        LandmarkProto.Landmark point_6=raccoltaPunti.getLandmark(6);
-        LandmarkProto.Landmark point_5=raccoltaPunti.getLandmark(5);
-        LandmarkProto.Landmark point_4=raccoltaPunti.getLandmark(4);
-        LandmarkProto.Landmark point_3=raccoltaPunti.getLandmark(3);
-        LandmarkProto.Landmark point_2=raccoltaPunti.getLandmark(2);
-        LandmarkProto.Landmark point_1=raccoltaPunti.getLandmark(1);
-        LandmarkProto.Landmark point_0=raccoltaPunti.getLandmark(0);
+    public static boolean checkGesture(List<HandPoints> relevantPoints, HashMap<HandPoints, Integer> targetLevels, HashMap<HandPoints, Integer> fingerLevels, int error) {
+        for (HandPoints point : relevantPoints) {
+            if (!isBetween(fingerLevels.get(point), targetLevels.get(point) - error, targetLevels.get(point) + error)) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-        HashMap<Integer,Integer> mappaLivelli = new HashMap<Integer,Integer>(); //partendo dalla punta del dito fino ad arrivare al polso
+    public static HashMap<HandPoints, Integer> fingerLevelsToWrist(int numLevels, LandmarkProto.LandmarkList landmarks) {//per il momento solo indice
+        LandmarkProto.Landmark point_20 = landmarks.getLandmark(20);
+        LandmarkProto.Landmark point_19 = landmarks.getLandmark(19);
+        LandmarkProto.Landmark point_18 = landmarks.getLandmark(18);
+        LandmarkProto.Landmark point_17 = landmarks.getLandmark(17);
+        LandmarkProto.Landmark point_16 = landmarks.getLandmark(16);
+        LandmarkProto.Landmark point_15 = landmarks.getLandmark(15);
+        LandmarkProto.Landmark point_14 = landmarks.getLandmark(14);
+        LandmarkProto.Landmark point_13 = landmarks.getLandmark(13);
+        LandmarkProto.Landmark point_12 = landmarks.getLandmark(12);
+        LandmarkProto.Landmark point_11 = landmarks.getLandmark(11);
+        LandmarkProto.Landmark point_10 = landmarks.getLandmark(10);
+        LandmarkProto.Landmark point_9 = landmarks.getLandmark(9);
+        LandmarkProto.Landmark point_8 = landmarks.getLandmark(8);
+        LandmarkProto.Landmark point_7 = landmarks.getLandmark(7);
+        LandmarkProto.Landmark point_6 = landmarks.getLandmark(6);
+        LandmarkProto.Landmark point_5 = landmarks.getLandmark(5);
+        LandmarkProto.Landmark point_4 = landmarks.getLandmark(4);
+        LandmarkProto.Landmark point_3 = landmarks.getLandmark(3);
+        LandmarkProto.Landmark point_2 = landmarks.getLandmark(2);
+        LandmarkProto.Landmark point_1 = landmarks.getLandmark(1);
+        LandmarkProto.Landmark point_0 = landmarks.getLandmark(0);
 
-        float distanzaMassima = getDistance(point_12.getX(), point_12.getY(),point_12.getZ(),point_11.getX(),point_11.getY(),point_11.getZ());
-        distanzaMassima += getDistance(point_11.getX(), point_11.getY(),point_11.getZ(),point_10.getX(),point_10.getY(),point_10.getZ());
-        distanzaMassima += getDistance(point_10.getX(), point_10.getY(),point_10.getZ(),point_9.getX(),point_9.getY(),point_9.getZ());
-        distanzaMassima += getDistance(point_9.getX(), point_9.getY(),point_9.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
+        HashMap<HandPoints, Integer> mappaLivelli = new HashMap<HandPoints, Integer>(); //partendo dalla punta del dito fino ad arrivare al polso
+
+        float distanzaMassima = getLandmarkDistance(point_12, point_11);
+        distanzaMassima += getLandmarkDistance(point_11, point_10);
+        distanzaMassima += getLandmarkDistance(point_10, point_9);
+        distanzaMassima += getLandmarkDistance(point_9, point_0);
 
         //pollice
-        float distanzaPunto4 = getDistance(point_4.getX(), point_4.getY(),point_4.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(4,Math.round((distanzaPunto4*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto4 = getLandmarkDistance(point_4, point_0);
+        mappaLivelli.put(HandPoints.THUMB_TIP, Math.round((distanzaPunto4 * numLevels) / distanzaMassima));
 
-        float distanzaPunto3 = getDistance(point_3.getX(), point_3.getY(),point_3.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(3,Math.round((distanzaPunto3*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto3 = getLandmarkDistance(point_3, point_0);
+        mappaLivelli.put(HandPoints.THUMB_UPPER, Math.round((distanzaPunto3 * numLevels) / distanzaMassima));
 
-        float distanzaPunto2 = getDistance(point_2.getX(), point_2.getY(),point_2.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(2,Math.round((distanzaPunto2*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto2 = getLandmarkDistance(point_2, point_0);
+        mappaLivelli.put(HandPoints.THUMB_LOWER, Math.round((distanzaPunto2 * numLevels) / distanzaMassima));
 
-        float distanzaPunto1 = getDistance(point_1.getX(), point_1.getY(),point_1.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(1,Math.round((distanzaPunto1*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto1 = getLandmarkDistance(point_1, point_0);
+        mappaLivelli.put(HandPoints.THUMB_BASE, Math.round((distanzaPunto1 * numLevels) / distanzaMassima));
 
         //indice
-        float distanzaPunto8 = getDistance(point_8.getX(), point_8.getY(),point_8.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(8,Math.round((distanzaPunto8*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto8 = getLandmarkDistance(point_8, point_0);
+        mappaLivelli.put(HandPoints.INDEX_TIP, Math.round((distanzaPunto8 * numLevels) / distanzaMassima));
 
-        float distanzaPunto7 = getDistance(point_7.getX(), point_7.getY(),point_7.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(7,Math.round((distanzaPunto7*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto7 = getLandmarkDistance(point_7, point_0);
+        mappaLivelli.put(HandPoints.INDEX_UPPER, Math.round((distanzaPunto7 * numLevels) / distanzaMassima));
 
-        float distanzaPunto6 = getDistance(point_6.getX(), point_6.getY(),point_6.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(6,Math.round((distanzaPunto6*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto6 = getLandmarkDistance(point_6, point_0);
+        mappaLivelli.put(HandPoints.INDEX_LOWER, Math.round((distanzaPunto6 * numLevels) / distanzaMassima));
 
-        float distanzaPunto5 = getDistance(point_5.getX(), point_5.getY(),point_5.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(5,Math.round((distanzaPunto5*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto5 = getLandmarkDistance(point_5, point_0);
+        mappaLivelli.put(HandPoints.INDEX_BASE, Math.round((distanzaPunto5 * numLevels) / distanzaMassima));
 
         //medio
-        float distanzaPunto12 = getDistance(point_12.getX(), point_12.getY(),point_12.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(12,Math.round((distanzaPunto12*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto12 = getLandmarkDistance(point_12, point_0);
+        mappaLivelli.put(HandPoints.MIDDLE_TIP, Math.round((distanzaPunto12 * numLevels) / distanzaMassima));
 
-        float distanzaPunto11 = getDistance(point_11.getX(), point_11.getY(),point_11.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(11,Math.round((distanzaPunto11*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto11 = getLandmarkDistance(point_11, point_0);
+        mappaLivelli.put(HandPoints.MIDDLE_UPPER, Math.round((distanzaPunto11 * numLevels) / distanzaMassima));
 
-        float distanzaPunto10 = getDistance(point_10.getX(), point_10.getY(),point_10.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(10,Math.round((distanzaPunto10*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto10 = getLandmarkDistance(point_10, point_0);
+        mappaLivelli.put(HandPoints.MIDDLE_LOWER, Math.round((distanzaPunto10 * numLevels) / distanzaMassima));
 
-        float distanzaPunto9 = getDistance(point_9.getX(), point_9.getY(),point_9.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(9,Math.round((distanzaPunto9*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto9 = getLandmarkDistance(point_9, point_0);
+        mappaLivelli.put(HandPoints.MIDDLE_BASE, Math.round((distanzaPunto9 * numLevels) / distanzaMassima));
 
         //anulare
-        float distanzaPunto16 = getDistance(point_16.getX(), point_16.getY(),point_16.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(16,Math.round((distanzaPunto16*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto16 = getLandmarkDistance(point_16, point_0);
+        mappaLivelli.put(HandPoints.RING_TIP, Math.round((distanzaPunto16 * numLevels) / distanzaMassima));
 
-        float distanzaPunto15 = getDistance(point_15.getX(), point_15.getY(),point_15.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(15,Math.round((distanzaPunto15*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto15 = getLandmarkDistance(point_15, point_0);
+        mappaLivelli.put(HandPoints.RING_UPPER, Math.round((distanzaPunto15 * numLevels) / distanzaMassima));
 
-        float distanzaPunto14 = getDistance(point_14.getX(), point_14.getY(),point_14.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(14,Math.round((distanzaPunto14*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto14 = getLandmarkDistance(point_14, point_0);
+        mappaLivelli.put(HandPoints.RING_LOWER, Math.round((distanzaPunto14 * numLevels) / distanzaMassima));
 
-        float distanzaPunto13 = getDistance(point_13.getX(), point_13.getY(),point_13.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(13,Math.round((distanzaPunto13*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto13 = getLandmarkDistance(point_13, point_0);
+        mappaLivelli.put(HandPoints.RING_BASE, Math.round((distanzaPunto13 * numLevels) / distanzaMassima));
 
         //mignolo
-        float distanzaPunto20 = getDistance(point_20.getX(), point_20.getY(),point_20.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(20,Math.round((distanzaPunto20*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto20 = getLandmarkDistance(point_20, point_0);
+        mappaLivelli.put(HandPoints.PINKY_TIP, Math.round((distanzaPunto20 * numLevels) / distanzaMassima));
 
-        float distanzaPunto19 = getDistance(point_19.getX(), point_19.getY(),point_19.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(19,Math.round((distanzaPunto19*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto19 = getLandmarkDistance(point_19, point_0);
+        mappaLivelli.put(HandPoints.PINKY_UPPER, Math.round((distanzaPunto19 * numLevels) / distanzaMassima));
 
-        float distanzaPunto18 = getDistance(point_18.getX(), point_18.getY(),point_18.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(18,Math.round((distanzaPunto18*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto18 = getLandmarkDistance(point_18, point_0);
+        mappaLivelli.put(HandPoints.PINKY_LOWER, Math.round((distanzaPunto18 * numLevels) / distanzaMassima));
 
-        float distanzaPunto17 = getDistance(point_17.getX(), point_17.getY(),point_17.getZ(),point_0.getX(),point_0.getY(),point_0.getZ());
-        mappaLivelli.put(17,Math.round((distanzaPunto17*quantitàLivelli)/distanzaMassima));
+        float distanzaPunto17 = getLandmarkDistance(point_17, point_0);
+        mappaLivelli.put(HandPoints.PINKY_BASE, Math.round((distanzaPunto17 * numLevels) / distanzaMassima));
 
 
         return mappaLivelli;
     }
+
 }

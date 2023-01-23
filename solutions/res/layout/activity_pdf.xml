@@ -30,11 +30,18 @@
             android:layout_height="wrap_content"
             android:text="Torna su"
             style="?android:attr/buttonBarButtonStyle" />
+
         <Button
             android:id="@+id/condividi"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:text="Condividi" />
+        <Button
+            android:id="@+id/debug"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Condividi"
+            android:text="Debug"
             style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 

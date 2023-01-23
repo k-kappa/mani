@@ -25,6 +25,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -41,7 +42,7 @@ import com.google.mediapipe.solutions.hands.HandLandmark;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
-import com.*;
+import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ThumbUpGesture;
 
 import java.io.IOException;
@@ -297,19 +298,30 @@ public class MainActivity extends AppCompatActivity {
         HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
 
         ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+        PinchGesture pinchGesture = new PinchGesture();
 
         TextView wristLog = new TextView(this);
         wristLog.setText(String.valueOf(handsResultGlRenderer.log));
-        wristLog.setTextSize(20);
+        wristLog.setTextSize(18);
         wristLog.setTextColor(Color.RED);
         wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
         TextView thumbUp = new TextView(this);
-        thumbUp.setText("Gesture\nriconosciuta\n\n");
-        thumbUp.setTextSize(30);
+        thumbUp.setText("Thumb up");
+        thumbUp.setTextSize(18);
         thumbUp.setTextColor(Color.RED);
-        thumbUp.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+        TextView pinch = new TextView(this);
+        pinch.setText("Pinch");
+        pinch.setTextSize(18);
+        pinch.setTextColor(Color.RED);
 
+        LinearLayout gestureChecksLayout = new LinearLayout(this);
+        gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
+        gestureChecksLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
 
+        //aggiungere TextView varie a gestureChecksLayout
+        gestureChecksLayout.addView(wristLog);
+        gestureChecksLayout.addView(thumbUp);
+        gestureChecksLayout.addView(pinch);
 
         this.inputSource = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -343,11 +355,18 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
-                            if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
-                                Log.e("Gesture", "Thumb Up");
+                            boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);
                             } else {
                                 thumbUp.setTextColor(Color.RED);
+                            }
+
+                            if (pinchGestureCheck) {
+                                pinch.setTextColor(Color.GREEN);
+                            } else {
+                                pinch.setTextColor(Color.RED);
                             }
                         }
                     });
@@ -367,9 +386,8 @@ public class MainActivity extends AppCompatActivity {
         frameLayout.removeAllViewsInLayout();
         frameLayout.addView(glSurfaceView);
 
-        // add text view to frame layout
-        frameLayout.addView(wristLog);
-        frameLayout.addView(thumbUp);
+        // add linear layout view to frame layout
+        frameLayout.addView(gestureChecksLayout);
 
         glSurfaceView.setVisibility(View.VISIBLE);
         frameLayout.requestLayout();

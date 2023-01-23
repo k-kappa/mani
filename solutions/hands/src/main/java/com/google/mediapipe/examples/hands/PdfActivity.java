@@ -2,8 +2,8 @@ package com.google.mediapipe.examples.hands;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -26,8 +26,9 @@ import java.io.FileOutputStream;
 
 public class PdfActivity extends AppCompatActivity {
 
-    Button zoomIn, zoomOut, share, scrollDown;
+    private Button zoomIn, zoomOut, share, scrollDown, debug;
 
+    private float zoomLevel = 0.5f;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,6 +40,8 @@ public class PdfActivity extends AppCompatActivity {
         zoomOut = findViewById(R.id.zoom_out);
         share = findViewById(R.id.condividi);
         scrollDown = findViewById(R.id.scroll_down);
+
+        debug = findViewById(R.id.debug);
 
         PDFView pdfView = (PDFView) findViewById(R.id.pdf_viewer);
         final LinearLayout buttonBar = findViewById(R.id.button_bar);
@@ -89,6 +92,22 @@ public class PdfActivity extends AppCompatActivity {
             }
         });
         scrollDown.setOnClickListener(v -> pdfView.jumpTo(pdfView.getPageAtPositionOffset(0) , true));
+
+        debug.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        for (int i = 0; i < 500; i++) {
+                            pdfView.zoomTo(zoomLevel);
+                            pdfView.scrollBy(0, 1);
+                            zoomLevel += 0.01f;
+                        }
+                        Log.i("X: " + pdfView.getScrollX(), "Y: " + pdfView.getScrollY());
+                    }
+                }
+        );
+
 
     }
 
