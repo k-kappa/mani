@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:costrainLayout="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:backgroundTint="#FFFFFF"
+        style="?android:attr/buttonBarStyle"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoom In"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/zoom_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoom Out"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/scroll_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Torna su"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/condividi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Condividi"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdf_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:layout_below="@id/button_bar"/>
+</RelativeLayout>

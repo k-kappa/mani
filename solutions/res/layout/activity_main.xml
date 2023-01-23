@@ -34,6 +34,13 @@
             android:text="@string/start_camera" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/pdf_button"
+        android:layout_width="wrap_content"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_height="wrap_content"
+        android:text="Pdf Button" />
+
     <FrameLayout
         android:id="@+id/preview_display_layout"
         android:layout_width="match_parent"

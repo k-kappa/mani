@@ -25,7 +25,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -42,6 +41,7 @@ import com.google.mediapipe.solutions.hands.HandLandmark;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.*;
 import com.hands.gesture.ThumbUpGesture;
 
 import java.io.IOException;
@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Hands hands;
     // Run the pipeline and the model inference on GPU or CPU.
     private static final boolean RUN_ON_GPU = true;
+    Button btn;
 
     private enum InputSource {
         UNKNOWN,
@@ -85,6 +86,15 @@ public class MainActivity extends AppCompatActivity {
         setupVideoDemoUiComponents();
         setupLiveDemoUiComponents();
         System.out.println("prova");
+        btn = findViewById(R.id.pdf_button);
+
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PdfActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
