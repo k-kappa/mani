@@ -9,3 +9,5 @@ solutions/.gradle/
 .idea
 solutions/.idea/
 solutions/hands/.idea
+
+**/.DS_Store
