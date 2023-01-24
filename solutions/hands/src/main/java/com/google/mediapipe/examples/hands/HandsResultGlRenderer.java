@@ -115,28 +115,9 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                         landmark.getX(),
                         landmark.getY(),
                         isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
-                drawDistanceLine(landmarks.get(0).getLandmarkList(), RIGHT_HAND_CONNECTION_COLOR);
             }
 
-            ///////////
-            LandmarkProto.Landmark point_4 =landmarks.get(0).getLandmark(4);
-            LandmarkProto.Landmark point_5 =landmarks.get(0).getLandmark(5);
-            LandmarkProto.Landmark point_6 =landmarks.get(0).getLandmark(6);
-            LandmarkProto.Landmark point_7 =landmarks.get(0).getLandmark(7);
-            LandmarkProto.Landmark point_8 =landmarks.get(0).getLandmark(8);
-            float radius = Utils.getDistance(point_5.getX(),point_5.getY(),point_5.getZ(),point_7.getX(),point_7.getY(),point_7.getZ());
-            //////////
 
-            drawCircle(point_8.getX(),point_8.getY(),DRAWING_COLOR);
-
-            //log = "Thumb - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(4)) + "\n";
-            //log += "Index - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(8)) + "\n";
-            //log += "Middle - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(12)) + "\n";
-            //log += "Ring - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(16)) + "\n";
-            //log += "Pinky - Wrist: " + getDistance(landmarks.get(0).getLandmarkList().get(0), landmarks.get(0).getLandmarkList().get(20)) + "\n";
-            //log = "x: "+landmarks.get(0).getLandmark(8).getX()+",y: "+landmarks.get(0).getLandmark(8).getY()+",z: "+landmarks.get(0).getLandmark(8).getZ();
-            //log += "\n1->: "+ Utils.isInsideSphere(point_5.getX(),point_5.getY(),point_5.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);//verifico a video come si comportano le variabili booleane per avere un riscontro immediato
-            //log += "\n2->: "+ !Utils.isInsideSphere(point_4.getX(),point_4.getY(),point_4.getZ(),point_8.getX(),point_8.getY(),point_8.getZ(),radius);
             int numeroLivelli = 70;
             log = "\n" + HandPoints.THUMB_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_TIP);
             log += "\n" + HandPoints.INDEX_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_TIP);
@@ -153,15 +134,6 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
 
         }
 
-    }
-
-    private String getDistance(Landmark landmark, Landmark landmark1) {
-        return this.getDistance(landmark, landmark1, 4);
-    }
-
-    private String getDistance(Landmark landmark, Landmark landmark1, int maxDecimalPlaces) {
-        double distance = Math.sqrt(Math.pow(landmark.getX() - landmark1.getX(), 2) + Math.pow(landmark.getY() - landmark1.getY(), 2) + Math.pow(landmark.getZ() - landmark1.getZ(), 2));
-        return String.format("%." + maxDecimalPlaces + "f", distance);
     }
 
     //_____________________________________________________
