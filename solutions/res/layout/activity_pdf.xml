@@ -6,44 +6,43 @@
 
     <LinearLayout
         android:id="@+id/button_bar"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:backgroundTint="#FFFFFF"
-        style="?android:attr/buttonBarStyle"
         android:gravity="center">
 
         <Button
             android:id="@+id/zoom_in"
-            android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zoom In"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_weight="1"
+            android:text="Zoom In" />
+
         <Button
             android:id="@+id/zoom_out"
-            android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Zoom Out"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_weight="1"
+            android:text="Zoom Out" />
+
         <Button
             android:id="@+id/scroll_down"
-            android:layout_width="wrap_content"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Torna su"
-            style="?android:attr/buttonBarButtonStyle" />
+            android:layout_weight="1"
+            android:text="Torna su" />
 
         <Button
             android:id="@+id/condividi"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="32dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Condividi" />
-        <Button
-            android:id="@+id/debug"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Debug"
-            style="?android:attr/buttonBarButtonStyle" />
     </LinearLayout>
 
     <com.github.barteksc.pdfviewer.PDFView
