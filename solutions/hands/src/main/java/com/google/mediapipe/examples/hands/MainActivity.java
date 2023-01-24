@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         setupStaticImageDemoUiComponents();
         setupVideoDemoUiComponents();
         setupLiveDemoUiComponents();
-        System.out.println("prova");
+
         btn = findViewById(R.id.pdf_button);
 
         btn.setOnClickListener(new View.OnClickListener() {
@@ -279,7 +279,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Sets up the UI components for the live demo with camera input.
      */
-    private void setupLiveDemoUiComponents() {
+    public void setupLiveDemoUiComponents() {
         Button startCameraButton = findViewById(R.id.button_start_camera);
         startCameraButton.setOnClickListener(
                 v -> {
