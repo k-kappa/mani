@@ -6,38 +6,42 @@
 
     <LinearLayout
         android:id="@+id/buttons"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="?android:attr/buttonBarStyle"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/button_load_picture"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="88dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/load_picture" />
 
         <Button
             android:id="@+id/button_load_video"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="78dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/load_video" />
 
         <Button
             android:id="@+id/button_start_camera"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="92dp"
-            android:layout_height="match_parent"
+            android:layout_width="142dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/start_camera" />
 
         <Button
             android:id="@+id/pdf_button"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="99dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="Pdf Button" />
     </LinearLayout>
 
