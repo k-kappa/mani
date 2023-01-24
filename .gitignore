@@ -1,10 +1,11 @@
 solutions/hands/build
-./solutions/local.properties
-./solutions/hands/local.properties
+solutions/local.properties
+solutions/hands/local.properties
 
 # Gradle files
 solutions/.gradle/
 
 # IntelliJ
+.idea
 solutions/.idea/
 solutions/hands/.idea

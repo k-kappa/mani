@@ -1,0 +1,68 @@
+<!--suppress ALL -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:costrainLayout="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/button_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:backgroundTint="#FFFFFF"
+        style="?android:attr/buttonBarStyle"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/zoom_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoom In"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/zoom_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Zoom Out"
+            style="?android:attr/buttonBarButtonStyle" />
+        <Button
+            android:id="@+id/scroll_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Torna su"
+            style="?android:attr/buttonBarButtonStyle" />
+
+        <Button
+            android:id="@+id/condividi"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="32dp"
+            android:layout_height="wrap_content"
+            android:text="Condividi" />
+        <Button
+            android:id="@+id/debug"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Debug"
+            style="?android:attr/buttonBarButtonStyle" />
+    </LinearLayout>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/pdf_viewer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        android:layout_below="@id/button_bar"/>
+
+    <FrameLayout
+        android:id="@+id/frame_layout"
+        android:layout_width="100dp"
+        android:layout_height="175dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginRight="5dp"
+        android:elevation="10dp" />
+
+
+
+</RelativeLayout>
