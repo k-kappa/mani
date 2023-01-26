@@ -3,6 +3,7 @@ package com.google.mediapipe.examples.hands;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -20,6 +21,7 @@ import com.google.mediapipe.solutioncore.VideoInput;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ThumbUpGesture;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
@@ -40,6 +42,10 @@ public class PdfActivity extends AppCompatActivity {
     private CameraInput cameraInput;
     private File pdfFile;
     private PDFView pdfView;
+
+    PinchGesture pinchGesture = new PinchGesture();
+    ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+    long lastExecutionTime = 0;
 
     private SolutionGlSurfaceView<HandsResult> glSurfaceView;
 
@@ -73,7 +79,7 @@ public class PdfActivity extends AppCompatActivity {
         final LinearLayout buttonBar = findViewById(R.id.button_bar);
 
         //caricamento del pdf
-        pdfFile = new File(getFilesDir(), "documento.pdf");
+        //pdfFile = new File(getFilesDir(), "documento.pdf");
         createPDF("documento.pdf");
         pdfView.fromFile(pdfFile)
                 .enableSwipe(true)
@@ -211,8 +217,7 @@ public class PdfActivity extends AppCompatActivity {
         return;
     }
 
-
-    //METODI ATTIVAZIONE CAMERA E INFERENZA MEDIAPIPE
+    //METODI ATTIVAZIONE PIPELINE CAMERA
     private void stopCurrentPipeline() {
         if (cameraInput != null) {
             cameraInput.setNewFrameListener(null);
@@ -232,7 +237,6 @@ public class PdfActivity extends AppCompatActivity {
 
     private void setupStreamingModePipeline(InputSource inputSource) {
         HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
-        ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
 
         this.inputSource2 = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -263,13 +267,27 @@ public class PdfActivity extends AppCompatActivity {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
-                                pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true);
-                                showToast("thumb up");
+
+                            boolean checkPinch = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+
+                            if (checkPinch && !checkThumbUp) {
+                                //zoom 1 - 3, pinch 10 - 50
+                                Log.d("GESTURE", "Pinch distance = " + pinchGesture.getPinchDistance(handsResult.multiHandWorldLandmarks()));
+                                //pdfView.zoomTo(pinchGesture.getPinchDistance(handsResult.multiHandWorldLandmarks()));
+                                pdfView.zoomWithAnimation(pinchGesture.getPinchDistance(handsResult.multiHandWorldLandmarks()));
                             }
-                            //thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
 
-
+                            if (checkThumbUp && (System.currentTimeMillis() - lastExecutionTime) > 5000) {
+                                lastExecutionTime = System.currentTimeMillis();
+                                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                emailIntent.setType("text/plain");
+                                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"destinatario@example.com"});
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body email");
+                                emailIntent.putExtra(Intent.EXTRA_STREAM, pdfFile);
+                                startActivity(Intent.createChooser(emailIntent, "Invia email..."));
+                            }
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);

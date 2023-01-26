@@ -1,15 +1,21 @@
 package com.hands.gesture;
 
+import android.app.Activity;
+
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PinchGesture implements IHandGesture {
+
+    private static final String NAME = "PINCH";
+    private static final int GESTURE_ID = 2;
 
     @Override
     public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
@@ -33,18 +39,27 @@ public class PinchGesture implements IHandGesture {
         return false;
     }
 
+    public float getPinchDistance(List<LandmarkProto.LandmarkList> landmarkList) {
+        //range zoom 1.0, 3.0, range pinch 10, 50
+        if (landmarkList.size() > 0) {
+            int pinchLevel = Utils.pinchLevel(Constants.NUMERO_LIVELLI, landmarkList.get(0));
+            return Utils.map(pinchLevel, 10, 50, 1, 3);
+        }
+        return -1;
+    }
+
     @Override
     public String getName() {
-        return null;
+        return this.NAME;
     }
 
     @Override
     public int getGestureId() {
-        return 0;
+        return this.GESTURE_ID;
     }
 
     @Override
     public GestureType getGestureType() {
-        return null;
+        return GestureType.STATIC;
     }
 }
