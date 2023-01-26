@@ -288,6 +288,9 @@ public class PdfActivity extends AppCompatActivity {
                                 emailIntent.putExtra(Intent.EXTRA_STREAM, pdfFile);
                                 startActivity(Intent.createChooser(emailIntent, "Invia email..."));
                             }
+
+                            //per scroll in su
+                            //pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true));
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);

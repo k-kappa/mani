@@ -20,6 +20,7 @@ public class PinchGesture implements IHandGesture {
     @Override
     public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
 
+        //almeno una mano
         if (landmarkList.size() > 0) {
 
             HashMap<HandPoints, Integer> targetLevels = new HashMap<HandPoints, Integer>();
