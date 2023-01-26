@@ -2,16 +2,19 @@ package com.hands.gesture;
 
 import android.util.Log;
 
+import com.google.common.collect.ImmutableList;
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
+import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
+import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmarkList;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordinate bidimensionali
+public class CrabGesture /*implements IHandGesture*/ {//qui lavoriamo solo su coordinate bidimensionali
 
     private static final String NAME = "Crab";
     private static final int GESTURE_ID = 3;
@@ -29,8 +32,8 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
         puntiPrec.add(1,0f);
     }
 
-    @Override
-    public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
+    //@Override
+    public boolean checkGesture(ImmutableList<LandmarkProto.NormalizedLandmarkList> landmarkList) {
         if (landmarkList.size() > 0) {
 
 
@@ -99,17 +102,17 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
         firstTime=false;
     }
 
-    @Override
+    //@Override
     public String getName() {
         return this.NAME;
     }
 
-    @Override
+    //@Override
     public int getGestureId() {
         return this.GESTURE_ID;
     }
 
-    @Override
+    //@Override
     public GestureType getGestureType() {
         return GestureType.STATIC;
     }

@@ -19,6 +19,11 @@ public class Utils {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
+    public static float getLandmarkDistance(LandmarkProto.NormalizedLandmark point1, LandmarkProto.NormalizedLandmark point2) {
+        return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
+    }
+
+
     public static boolean isBetween(float value, float low, float high) {
         return value >= low && value <= high;
     }
@@ -39,13 +44,13 @@ public class Utils {
         }
         return true;
     }
-
-    public static int getXYDistanceInLevels(int numLevels, LandmarkProto.LandmarkList landmarks, float puntoA_X, float puntoA_Y,float puntoB_X , float puntoB_Y){
-        LandmarkProto.Landmark point_12 = landmarks.getLandmark(12);
-        LandmarkProto.Landmark point_11 = landmarks.getLandmark(11);
-        LandmarkProto.Landmark point_10 = landmarks.getLandmark(10);
-        LandmarkProto.Landmark point_9 = landmarks.getLandmark(9);
-        LandmarkProto.Landmark point_0 = landmarks.getLandmark(0);
+    
+    public static  int getXYDistanceInLevels(int numLevels, LandmarkProto.NormalizedLandmarkList landmarks, float puntoA_X, float puntoA_Y,float puntoB_X , float puntoB_Y){
+        LandmarkProto.NormalizedLandmark point_12 = landmarks.getLandmark(12);
+        LandmarkProto.NormalizedLandmark point_11 = landmarks.getLandmark(11);
+        LandmarkProto.NormalizedLandmark point_10 = landmarks.getLandmark(10);
+        LandmarkProto.NormalizedLandmark point_9 = landmarks.getLandmark(9);
+        LandmarkProto.NormalizedLandmark point_0 = landmarks.getLandmark(0);
 
         float distanzaMassima = getLandmarkDistance(point_12, point_11);
         distanzaMassima += getLandmarkDistance(point_11, point_10);
