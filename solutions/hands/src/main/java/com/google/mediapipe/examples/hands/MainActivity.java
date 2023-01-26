@@ -42,6 +42,8 @@ import com.google.mediapipe.solutions.hands.HandLandmark;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.CrabGesture;
+import com.hands.gesture.OpenHandGesture;
 import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ThumbUpGesture;
 
@@ -299,6 +301,8 @@ public class MainActivity extends AppCompatActivity {
 
         ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
         PinchGesture pinchGesture = new PinchGesture();
+        CrabGesture crabGesture = new CrabGesture();
+        OpenHandGesture openHandGesture = new OpenHandGesture();
 
         TextView wristLog = new TextView(this);
         wristLog.setText(String.valueOf(handsResultGlRenderer.log));
@@ -313,6 +317,14 @@ public class MainActivity extends AppCompatActivity {
         pinch.setText("Pinch");
         pinch.setTextSize(18);
         pinch.setTextColor(Color.RED);
+        TextView crab = new TextView(this);
+        crab.setText("Crab");
+        crab.setTextSize(18);
+        crab.setTextColor(Color.RED);
+        TextView openHand = new TextView(this);
+        openHand.setText("Open hand");
+        openHand.setTextSize(18);
+        openHand.setTextColor(Color.RED);
 
         LinearLayout gestureChecksLayout = new LinearLayout(this);
         gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
@@ -322,6 +334,9 @@ public class MainActivity extends AppCompatActivity {
         gestureChecksLayout.addView(wristLog);
         gestureChecksLayout.addView(thumbUp);
         gestureChecksLayout.addView(pinch);
+        gestureChecksLayout.addView(crab);
+        gestureChecksLayout.addView(openHand);
+
 
         this.inputSource = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -357,6 +372,8 @@ public class MainActivity extends AppCompatActivity {
                             wristLog.setText(handsResultGlRenderer.log);
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean crabGestureCheck = crabGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean openHandCheck = openHandGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);
                                 //Intent intent1 = new Intent(MainActivity.this, PdfActivity.class);
@@ -369,6 +386,18 @@ public class MainActivity extends AppCompatActivity {
                                 pinch.setTextColor(Color.GREEN);
                             } else {
                                 pinch.setTextColor(Color.RED);
+                            }
+
+                            if(crabGestureCheck){
+                                crab.setTextColor(Color.GREEN);
+                            }else{
+                                crab.setTextColor(Color.RED);
+                            }
+
+                            if(openHandCheck){
+                                openHand.setTextColor(Color.GREEN);
+                            }else{
+                                openHand.setTextColor(Color.RED);
                             }
                         }
                     });

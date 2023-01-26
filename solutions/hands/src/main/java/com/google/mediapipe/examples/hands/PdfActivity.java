@@ -21,6 +21,8 @@ import com.google.mediapipe.solutioncore.VideoInput;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.CrabGesture;
+import com.hands.gesture.OpenHandGesture;
 import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ThumbUpGesture;
 import com.itextpdf.text.Document;
@@ -45,6 +47,8 @@ public class PdfActivity extends AppCompatActivity {
 
     PinchGesture pinchGesture = new PinchGesture();
     ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+    CrabGesture crabGesture = new CrabGesture();
+    OpenHandGesture openHandGesture = new OpenHandGesture();
     long lastExecutionTime = 0;
 
     private SolutionGlSurfaceView<HandsResult> glSurfaceView;
@@ -270,6 +274,8 @@ public class PdfActivity extends AppCompatActivity {
 
                             boolean checkPinch = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean checkCrab = crabGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean checkOpenHand = openHandGesture.checkGesture(handsResult.multiHandWorldLandmarks());
 
                             if (checkPinch && !checkThumbUp) {
                                 //zoom 1 - 3, pinch 10 - 50
@@ -288,6 +294,20 @@ public class PdfActivity extends AppCompatActivity {
                                 emailIntent.putExtra(Intent.EXTRA_STREAM, pdfFile);
                                 startActivity(Intent.createChooser(emailIntent, "Invia email..."));
                             }
+
+
+                            if(checkCrab){
+                                float x = crabGesture.getVettoreX()*8000;
+                                float y = crabGesture.getVettoreY()*5000;
+                                pdfView.moveRelativeTo(x,y);
+                                //showToast("Crab");
+                                //Log.println(Log.DEBUG,"debug",x+" "+ y);
+                            }
+
+                            if(checkOpenHand){
+                                pdfView.moveRelativeTo(0,-40);
+                            }
+
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);
