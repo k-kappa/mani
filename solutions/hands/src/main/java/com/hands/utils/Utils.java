@@ -11,6 +11,10 @@ public class Utils {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
     }
 
+    public static float getDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
+
     public static float getLandmarkDistance(LandmarkProto.Landmark point1, LandmarkProto.Landmark point2) {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
@@ -34,6 +38,21 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static int getXYDistanceInLevels(int numLevels, LandmarkProto.LandmarkList landmarks, float puntoA_X, float puntoA_Y,float puntoB_X , float puntoB_Y){
+        LandmarkProto.Landmark point_12 = landmarks.getLandmark(12);
+        LandmarkProto.Landmark point_11 = landmarks.getLandmark(11);
+        LandmarkProto.Landmark point_10 = landmarks.getLandmark(10);
+        LandmarkProto.Landmark point_9 = landmarks.getLandmark(9);
+        LandmarkProto.Landmark point_0 = landmarks.getLandmark(0);
+
+        float distanzaMassima = getLandmarkDistance(point_12, point_11);
+        distanzaMassima += getLandmarkDistance(point_11, point_10);
+        distanzaMassima += getLandmarkDistance(point_10, point_9);
+        distanzaMassima += getLandmarkDistance(point_9, point_0);
+
+        return Math.round((getDistance(puntoA_X,puntoA_Y,puntoB_X,puntoB_Y) * numLevels) / distanzaMassima);
     }
 
     public static HashMap<HandPoints, Integer> fingerLevelsToWrist(int numLevels, LandmarkProto.LandmarkList landmarks) {//per il momento solo indice
