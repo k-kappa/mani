@@ -372,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
                             wristLog.setText(handsResultGlRenderer.log);
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            boolean crabGestureCheck = crabGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean crabGestureCheck = crabGesture.checkGesture(handsResult.multiHandLandmarks());
                             boolean openHandCheck = openHandGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);

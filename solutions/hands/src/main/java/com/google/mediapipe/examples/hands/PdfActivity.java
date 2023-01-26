@@ -274,7 +274,7 @@ public class PdfActivity extends AppCompatActivity {
 
                             boolean checkPinch = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            boolean checkCrab = crabGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean checkCrab = crabGesture.checkGesture(handsResult.multiHandLandmarks());
                             boolean checkOpenHand = openHandGesture.checkGesture(handsResult.multiHandWorldLandmarks());
 
                             if (checkPinch && !checkThumbUp) {
@@ -297,8 +297,8 @@ public class PdfActivity extends AppCompatActivity {
 
 
                             if(checkCrab){
-                                float x = crabGesture.getVettoreX()*8000;
-                                float y = crabGesture.getVettoreY()*5000;
+                                float x = crabGesture.getVettoreX()*500;
+                                float y = crabGesture.getVettoreY()*500;
                                 pdfView.moveRelativeTo(x,y);
                                 //showToast("Crab");
                                 //Log.println(Log.DEBUG,"debug",x+" "+ y);
