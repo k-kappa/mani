@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
-                            boolean scrollGestureCheck = scrollPageGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
                             /*
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
