@@ -43,6 +43,7 @@ import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.gesture.PinchGesture;
+import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThumbUpGesture;
 
 import java.io.IOException;
@@ -227,7 +228,7 @@ public class MainActivity extends AppCompatActivity {
         // Connects MediaPipe Hands solution to the user-defined HandsResultImageView.
         hands.setResultListener(
                 handsResult -> {
-                    logWristLandmark(handsResult, /*showPixelValues=*/ true);
+                    //logWristLandmark(handsResult, /*showPixelValues=*/ true);
                     imageView.setHandsResult(handsResult);
                     runOnUiThread(() -> imageView.update());
                 });
@@ -299,20 +300,25 @@ public class MainActivity extends AppCompatActivity {
 
         ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
         PinchGesture pinchGesture = new PinchGesture();
+        ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
 
         TextView wristLog = new TextView(this);
         wristLog.setText(String.valueOf(handsResultGlRenderer.log));
         wristLog.setTextSize(18);
         wristLog.setTextColor(Color.RED);
         wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
-        TextView thumbUp = new TextView(this);
+        /*TextView thumbUp = new TextView(this);
         thumbUp.setText("Thumb up");
         thumbUp.setTextSize(18);
         thumbUp.setTextColor(Color.RED);
         TextView pinch = new TextView(this);
         pinch.setText("Pinch");
         pinch.setTextSize(18);
-        pinch.setTextColor(Color.RED);
+        pinch.setTextColor(Color.RED);*/
+        TextView scroll = new TextView(this);
+        scroll.setText("Scroll");
+        scroll.setTextSize(18);
+        scroll.setTextColor(Color.RED);
 
         LinearLayout gestureChecksLayout = new LinearLayout(this);
         gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
@@ -320,8 +326,9 @@ public class MainActivity extends AppCompatActivity {
 
         //aggiungere TextView varie a gestureChecksLayout
         gestureChecksLayout.addView(wristLog);
-        gestureChecksLayout.addView(thumbUp);
-        gestureChecksLayout.addView(pinch);
+        //gestureChecksLayout.addView(thumbUp);
+        //gestureChecksLayout.addView(pinch);
+        gestureChecksLayout.addView(scroll);
 
         this.inputSource = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -350,11 +357,13 @@ public class MainActivity extends AppCompatActivity {
         glSurfaceView.setRenderInputImage(true);
         hands.setResultListener(
                 handsResult -> {
-                    logWristLandmark(handsResult, /*showPixelValues=*/ false);
+                    //logWristLandmark(handsResult, /*showPixelValues=*/ false);
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
+                            boolean scrollGestureCheck = scrollPageGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            /*
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             if (thumbUpGestureCheck) {
@@ -369,6 +378,12 @@ public class MainActivity extends AppCompatActivity {
                                 pinch.setTextColor(Color.GREEN);
                             } else {
                                 pinch.setTextColor(Color.RED);
+                            }*/
+
+                            if (scrollGestureCheck) {
+                                scroll.setTextColor(Color.GREEN);
+                            } else {
+                                scroll.setTextColor(Color.RED);
                             }
                         }
                     });

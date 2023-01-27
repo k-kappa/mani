@@ -29,6 +29,7 @@ import com.hands.utils.Utils;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -118,6 +119,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             }
 
 
+            /*
             int numeroLivelli = 70;
             log = "\n" + HandPoints.THUMB_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_TIP);
             log += "\n" + HandPoints.INDEX_TIP + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_TIP);
@@ -130,7 +132,33 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             log += "\n" + HandPoints.MIDDLE_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_UPPER);
             log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
             log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
+
             log += "\n\n";
+             */
+
+
+            List<NormalizedLandmark> landmarkList = result.multiHandLandmarks().get(0).getLandmarkList();
+
+
+            //
+
+            DecimalFormat df = new DecimalFormat("#.##");
+
+            log = "\n" + HandPoints.THUMB_TIP + ":  "+ df.format(landmarkList.get(4).getX()) + "   " + df.format(landmarkList.get(4).getY());
+            log += "\n" + HandPoints.INDEX_TIP + ":     "+ df.format(landmarkList.get(8).getX()) + "   " + df.format(landmarkList.get(8).getY());
+            log += "\n" + HandPoints.MIDDLE_TIP + ": "+ df.format(landmarkList.get(12).getX()) + "   " + df.format(landmarkList.get(12).getY());
+            log += "\n" + HandPoints.RING_TIP + ":       "+ df.format(landmarkList.get(16).getX()) + "   " + df.format(landmarkList.get(16).getY());
+            log += "\n" + HandPoints.PINKY_TIP + ":     "+ df.format(landmarkList.get(20).getX()) + "   " + df.format(landmarkList.get(20).getY());
+            //add all fingers UPPER to log message
+            /*
+            log += "\n\n" + HandPoints.THUMB_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_UPPER);
+            log += "\n" + HandPoints.INDEX_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_UPPER);
+            log += "\n" + HandPoints.MIDDLE_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_UPPER);
+            log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
+            log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
+            */
+            log += "\n\n";
+
 
         }
 
