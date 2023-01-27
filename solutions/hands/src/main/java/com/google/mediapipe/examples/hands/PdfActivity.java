@@ -268,8 +268,8 @@ public class PdfActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
-                            boolean checkPinch = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean checkPinch = pinchGesture.checkGesture(handsResult);
+                            boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult);
 
                             if (checkPinch && !checkThumbUp) {
                                 //zoom 1 - 3, pinch 10 - 50

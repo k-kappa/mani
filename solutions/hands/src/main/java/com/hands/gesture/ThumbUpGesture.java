@@ -3,9 +3,11 @@ package com.hands.gesture;
 import android.app.Activity;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
+import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
+import com.hands.utils.VectorUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,7 +22,10 @@ public class ThumbUpGesture implements IHandGesture {
     private static final long timer = 5000;
 
     @Override
-    public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
+    public boolean checkGesture(HandsResult handsResult) {
+
+        List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
+
         if (landmarkList.size() > 0) {
             int errore = 8;
 
@@ -36,7 +41,17 @@ public class ThumbUpGesture implements IHandGesture {
 
             ArrayList<HandPoints> relevantPoints = new ArrayList<HandPoints>(improntaAnalizzata.keySet());
 
-            return Utils.checkGesture(relevantPoints, improntaAnalizzata, actualLevels, errore);
+            List<Integer> thumbErrors = new ArrayList<Integer>(2);
+            thumbErrors.add(10);
+            thumbErrors.add(10);
+            List<LandmarkProto.NormalizedLandmark> normalizedLandmarkList = new ArrayList<LandmarkProto.NormalizedLandmark>();
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_BASE.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_LOWER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_UPPER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_TIP.getValue()));
+
+            return Utils.checkGesture(relevantPoints, improntaAnalizzata, actualLevels, errore) &&
+                    VectorUtils.checkInLineNormalized(normalizedLandmarkList, thumbErrors);
         }
         return false;
     }

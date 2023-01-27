@@ -15,16 +15,12 @@ public class Utils {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
-    public static boolean isBetween(float value, float low, float high) {
-        return value >= low && value <= high;
+    public static float getLandmarkDistance(LandmarkProto.NormalizedLandmark point1, LandmarkProto.NormalizedLandmark point2) {
+        return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
     public static boolean isBetween(int value, int low, int high) {
         return value >= low && value <= high;
-    }
-
-    public static boolean isInsideSphere(float point_x, float point_y, float point_z, float centre_X, float centre_y, float centre_z, float radius) {
-        return (point_x - centre_X) * (point_x - centre_X) + (point_y - centre_y) * (point_y - centre_y) + (point_z + centre_z) * (point_z + centre_z) < radius * radius;
     }
 
     public static boolean checkGesture(List<HandPoints> relevantPoints, HashMap<HandPoints, Integer> targetLevels, HashMap<HandPoints, Integer> fingerLevels, int error) {
@@ -34,6 +30,22 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    private static float maxDistance(LandmarkProto.LandmarkList landmarks) {
+        float distanzaMassima = getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_TIP.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_UPPER.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_UPPER.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_LOWER.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_LOWER.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_BASE.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_BASE.getValue()), landmarks.getLandmark(HandPoints.WRIST.getValue()));
+        return distanzaMassima;
+    }
+
+    public static Integer getDistanceLevel(int numLevels, LandmarkProto.Landmark landmark1, LandmarkProto.Landmark landmark2, LandmarkProto.LandmarkList landmarks) {
+        float distanzaMassima = Utils.maxDistance(landmarks);
+
+        float distanzaAttuale = Utils.getLandmarkDistance(landmark1, landmark2);
+
+        return (int) (distanzaAttuale / distanzaMassima * numLevels);
     }
 
     public static HashMap<HandPoints, Integer> fingerLevelsToWrist(int numLevels, LandmarkProto.LandmarkList landmarks) {//per il momento solo indice

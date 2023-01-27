@@ -355,12 +355,10 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
-                            boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
+                            boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);
-                                //Intent intent1 = new Intent(MainActivity.this, PdfActivity.class);
-                                //startActivity(intent1);
                             } else {
                                 thumbUp.setTextColor(Color.RED);
                             }

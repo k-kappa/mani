@@ -23,6 +23,7 @@ import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
 import com.hands.utils.VectorUtils;
@@ -134,43 +135,34 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             log += "\n" + HandPoints.RING_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.RING_UPPER);
             log += "\n" + HandPoints.PINKY_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.PINKY_UPPER);
 
-            //log += "\n\nWITH LANDMARKS";
-            //log += "\n" + HandPoints.THUMB_BASE + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHand.getLandmark(HandPoints.THUMB_BASE.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            //log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHand.getLandmark(HandPoints.THUMB_LOWER.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            //log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHand.getLandmark(HandPoints.THUMB_UPPER.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            //
-            //log += "\n\nWITH NORMALIZED LANDMARKS";
-            //log += "\n" + HandPoints.THUMB_BASE + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            //log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            //log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_UPPER.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.WRIST.getValue()),
-            //        landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
-
             log += "\n\nWITH LANDMARKS";
-            log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHand.getLandmark(HandPoints.THUMB_LOWER.getValue()),
+            log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHand.getLandmark(HandPoints.THUMB_BASE.getValue()),
+                    landmarksFirstHand.getLandmark(HandPoints.THUMB_LOWER.getValue()),
                     landmarksFirstHand.getLandmark(HandPoints.THUMB_BASE.getValue()),
                     landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHand.getLandmark(HandPoints.THUMB_UPPER.getValue()),
+            log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHand.getLandmark(HandPoints.THUMB_LOWER.getValue()),
+                    landmarksFirstHand.getLandmark(HandPoints.THUMB_UPPER.getValue()),
                     landmarksFirstHand.getLandmark(HandPoints.THUMB_BASE.getValue()),
                     landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
 
             log += "\n\nWITH NORMALIZED LANDMARKS";
-            log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
+            log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
                     landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
                     landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.distanceToLine(landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_UPPER.getValue()),
+            log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_UPPER.getValue()),
                     landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
                     landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
+
+            log += "\n\nINDEX_TIP -> INDEX_BASE" + Utils.getDistanceLevel(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHand.getLandmark(HandPoints.INDEX_BASE.getValue()),
+                    landmarksFirstHand.getLandmark(HandPoints.INDEX_TIP.getValue()),
+                    landmarksFirstHand);
 
             // normalizzare a livelli con ogni errore con distanza minima 0 e massima "lunghezza falange"?
 
