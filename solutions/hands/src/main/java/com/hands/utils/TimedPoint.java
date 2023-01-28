@@ -14,7 +14,7 @@ public class TimedPoint {
 
     public float velocityFrom(TimedPoint start) {
         long diff = this.timestamp - start.timestamp;
-        if(diff <= 0) {
+        if (diff <= 0) {
             diff = 1;
         }
         float velocity = distanceTo(start) / diff;
