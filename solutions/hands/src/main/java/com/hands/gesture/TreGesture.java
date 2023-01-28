@@ -27,7 +27,7 @@ public class TreGesture implements IHandGesture {
         List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
 
         if (landmarkList.size() > 0) {
-            int errore = 8;
+            int errore = 10;
 
             //impronta pollice in su
             HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<HandPoints, Integer>(); //fa fatica quando non si vedono parte delle dita

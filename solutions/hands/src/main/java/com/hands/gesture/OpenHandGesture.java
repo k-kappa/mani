@@ -7,6 +7,7 @@ import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
+import com.hands.utils.VectorUtils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -37,7 +38,17 @@ public class OpenHandGesture implements IHandGesture {
 
             ArrayList<HandPoints> relevantPoints = new ArrayList<>(improntaAnalizzata.keySet());
 
-            return Utils.checkGesture(relevantPoints, improntaAnalizzata, actualLevels, errore);
+            List<Integer> thumbErrors = new ArrayList<Integer>(2);
+            thumbErrors.add(10);
+            thumbErrors.add(10);
+            List<LandmarkProto.NormalizedLandmark> normalizedLandmarkList = new ArrayList<LandmarkProto.NormalizedLandmark>();
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_BASE.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_LOWER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_UPPER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.THUMB_TIP.getValue()));
+
+            return Utils.checkGesture(relevantPoints, improntaAnalizzata, actualLevels, errore) &&
+                    !VectorUtils.checkInLineNormalized(normalizedLandmarkList, thumbErrors);
         }
         return false;
     }
