@@ -3,6 +3,7 @@ package com.hands.gesture;
 import android.app.Activity;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
+import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
@@ -20,7 +21,10 @@ public class TreGesture implements IHandGesture {
     private static final long timer = 5000;
 
     @Override
-    public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
+    public boolean checkGesture(HandsResult handsResult) {
+
+        List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
+
         if (landmarkList.size() > 0) {
             int errore = 8;
 

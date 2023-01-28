@@ -344,14 +344,14 @@ public class MainActivity extends AppCompatActivity {
         wristLog.setTextSize(18);
         wristLog.setTextColor(Color.RED);
         wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
-        /*TextView thumbUp = new TextView(this);
+        TextView thumbUp = new TextView(this);
         thumbUp.setText("Thumb up");
         thumbUp.setTextSize(18);
         thumbUp.setTextColor(Color.RED);
         TextView pinch = new TextView(this);
         pinch.setText("Pinch");
         pinch.setTextSize(18);
-        pinch.setTextColor(Color.RED);*/
+        pinch.setTextColor(Color.RED);
         TextView scroll = new TextView(this);
         scroll.setText("Scroll");
         scroll.setTextSize(18);
@@ -419,9 +419,6 @@ public class MainActivity extends AppCompatActivity {
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
                             int scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
-                            /*
-                            boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             boolean crabGestureCheck = crabGesture.checkGesture(handsResult);
@@ -439,7 +436,7 @@ public class MainActivity extends AppCompatActivity {
                                 pinch.setTextColor(Color.GREEN);
                             } else {
                                 pinch.setTextColor(Color.RED);
-                            }*/
+                            }
 
                             if (scrollGestureCheck==1) {
                                 scroll.setTextColor(Color.GREEN);

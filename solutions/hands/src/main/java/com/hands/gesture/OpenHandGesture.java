@@ -3,6 +3,7 @@ package com.hands.gesture;
 import android.app.Activity;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
+import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
@@ -18,11 +19,14 @@ public class OpenHandGesture implements IHandGesture {
     private static final int GESTURE_ID = 4;
 
     @Override
-    public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
+    public boolean checkGesture(HandsResult handsResult) {
+
+        List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
+
         if (landmarkList.size() > 0) {
             int errore = 6;
 
-            HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<HandPoints, Integer>();
+            HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<>();
             improntaAnalizzata.put(HandPoints.THUMB_TIP, 35);//valori rilevati empiricamente su 70 livelli totali
             improntaAnalizzata.put(HandPoints.INDEX_TIP, 63);
             improntaAnalizzata.put(HandPoints.MIDDLE_TIP, 67);
@@ -31,7 +35,7 @@ public class OpenHandGesture implements IHandGesture {
 
             HashMap<HandPoints, Integer> actualLevels = Utils.fingerLevelsToWrist(Constants.NUMERO_LIVELLI, landmarkList.get(0));
 
-            ArrayList<HandPoints> relevantPoints = new ArrayList<HandPoints>(improntaAnalizzata.keySet());
+            ArrayList<HandPoints> relevantPoints = new ArrayList<>(improntaAnalizzata.keySet());
 
             return Utils.checkGesture(relevantPoints, improntaAnalizzata, actualLevels, errore);
         }
