@@ -120,8 +120,8 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                         isLeftHand ? LEFT_HAND_HOLLOW_CIRCLE_COLOR : RIGHT_HAND_HOLLOW_CIRCLE_COLOR);
             }
 
+            log = "";
 
-            /*
             int numeroLivelli = 70;
             LandmarkList landmarksFirstHand = landmarks.get(0);
             LandmarkProto.NormalizedLandmarkList landmarksFirstHandNormal = result.multiHandLandmarks().get(0);
@@ -130,12 +130,12 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             log += "\n" + HandPoints.MIDDLE_TIP + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.MIDDLE_TIP);
             log += "\n" + HandPoints.RING_TIP + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.RING_TIP);
             log += "\n" + HandPoints.PINKY_TIP + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.PINKY_TIP);
-            //add all fingers UPPER to log message
-            log += "\n\n" + HandPoints.THUMB_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.THUMB_UPPER);
-            log += "\n" + HandPoints.INDEX_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.INDEX_UPPER);
-            log += "\n" + HandPoints.MIDDLE_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.MIDDLE_UPPER);
-            log += "\n" + HandPoints.RING_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.RING_UPPER);
-            log += "\n" + HandPoints.PINKY_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.PINKY_UPPER);
+            ////add all fingers UPPER to log message
+            //log += "\n\n" + HandPoints.THUMB_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.THUMB_UPPER);
+            //log += "\n" + HandPoints.INDEX_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.INDEX_UPPER);
+            //log += "\n" + HandPoints.MIDDLE_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.MIDDLE_UPPER);
+            //log += "\n" + HandPoints.RING_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.RING_UPPER);
+            //log += "\n" + HandPoints.PINKY_UPPER + ": " + Utils.fingerLevelsToWrist(numeroLivelli, landmarksFirstHand).get(HandPoints.PINKY_UPPER);
 
             log += "\n\nWITH LANDMARKS";
             log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
@@ -150,45 +150,36 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
                     landmarksFirstHand.getLandmark(HandPoints.THUMB_TIP.getValue()));
 
             log += "\n\nWITH NORMALIZED LANDMARKS";
-            log += "\n" + HandPoints.THUMB_LOWER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
-            log += "\n" + HandPoints.THUMB_UPPER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_LOWER.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_UPPER.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_BASE.getValue()),
-                    landmarksFirstHandNormal.getLandmark(HandPoints.THUMB_TIP.getValue()));
+            log += "\n" + HandPoints.INDEX_LOWER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_BASE.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_LOWER.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_BASE.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_TIP.getValue()));
+            log += "\n" + HandPoints.INDEX_UPPER + "_ERROR: " + VectorUtils.levelsToLine(Constants.NUMERO_LIVELLI,
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_LOWER.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_UPPER.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_BASE.getValue()),
+                    landmarksFirstHandNormal.getLandmark(HandPoints.INDEX_TIP.getValue()));
 
-            log += "\n\nINDEX_TIP -> INDEX_BASE" + Utils.getDistanceLevel(Constants.NUMERO_LIVELLI,
-                    landmarksFirstHand.getLandmark(HandPoints.INDEX_BASE.getValue()),
-                    landmarksFirstHand.getLandmark(HandPoints.INDEX_TIP.getValue()),
-                    landmarksFirstHand);
+            //log += "\n\nINDEX_TIP -> INDEX_BASE" + Utils.getDistanceLevel(Constants.NUMERO_LIVELLI,
+            //        landmarksFirstHand.getLandmark(HandPoints.INDEX_BASE.getValue()),
+            //        landmarksFirstHand.getLandmark(HandPoints.INDEX_TIP.getValue()),
+            //        landmarksFirstHand);
 
-            // normalizzare a livelli con ogni errore con distanza minima 0 e massima "lunghezza falange"?
-            log += "\n\n" + HandPoints.THUMB_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_UPPER);
-            log += "\n" + HandPoints.INDEX_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_UPPER);
-            log += "\n" + HandPoints.MIDDLE_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_UPPER);
-            log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
-            log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
-
-            log += "\n\n";
-             */
-
-
-            List<NormalizedLandmark> landmarkList = result.multiHandLandmarks().get(0).getLandmarkList();
-
-
+            //log += "\n\n" + HandPoints.THUMB_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_UPPER);
+            //log += "\n" + HandPoints.INDEX_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.INDEX_UPPER);
+            //log += "\n" + HandPoints.MIDDLE_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.MIDDLE_UPPER);
+            //log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
+            //log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
             //
+            //log += "\n\n";
 
-            DecimalFormat df = new DecimalFormat("#.##");
-
-            log = "\n" + HandPoints.THUMB_TIP + ":  "+ df.format(landmarkList.get(4).getX()) + "   " + df.format(landmarkList.get(4).getY());
-            log += "\n" + HandPoints.INDEX_TIP + ":     "+ df.format(landmarkList.get(8).getX()) + "   " + df.format(landmarkList.get(8).getY());
-            log += "\n" + HandPoints.MIDDLE_TIP + ": "+ df.format(landmarkList.get(12).getX()) + "   " + df.format(landmarkList.get(12).getY());
-            log += "\n" + HandPoints.RING_TIP + ":       "+ df.format(landmarkList.get(16).getX()) + "   " + df.format(landmarkList.get(16).getY());
-            log += "\n" + HandPoints.PINKY_TIP + ":     "+ df.format(landmarkList.get(20).getX()) + "   " + df.format(landmarkList.get(20).getY());
+            //DecimalFormat df = new DecimalFormat("#.##");
+            //log = "\n" + HandPoints.THUMB_TIP + ":  "+ df.format(landmarkList.get(4).getX()) + "   " + df.format(landmarkList.get(4).getY());
+            //log += "\n" + HandPoints.INDEX_TIP + ":     "+ df.format(landmarkList.get(8).getX()) + "   " + df.format(landmarkList.get(8).getY());
+            //log += "\n" + HandPoints.MIDDLE_TIP + ": "+ df.format(landmarkList.get(12).getX()) + "   " + df.format(landmarkList.get(12).getY());
+            //log += "\n" + HandPoints.RING_TIP + ":       "+ df.format(landmarkList.get(16).getX()) + "   " + df.format(landmarkList.get(16).getY());
+            //log += "\n" + HandPoints.PINKY_TIP + ":     "+ df.format(landmarkList.get(20).getX()) + "   " + df.format(landmarkList.get(20).getY());
             //add all fingers UPPER to log message
             /*
             log += "\n\n" + HandPoints.THUMB_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.THUMB_UPPER);
@@ -197,7 +188,7 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
             log += "\n" + HandPoints.RING_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.RING_UPPER);
             log += "\n" + HandPoints.PINKY_UPPER + ": "+ Utils.fingerLevelsToWrist(numeroLivelli,landmarks.get(0)).get(HandPoints.PINKY_UPPER);
             */
-            log += "\n\n";
+            //log += "\n\n";
 
 
         }

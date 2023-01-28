@@ -8,8 +8,10 @@ import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
+import com.hands.utils.VectorUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordinate bidimensionali
 
@@ -37,32 +39,40 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
         if (landmarkList.size() > 0) {
 
 
-            int range = 5;
+            int range = 7;
 
-            float puntoA_X = landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()).getX();
-            float puntoA_Y = landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()).getY();
-            float puntoB_X = landmarkList.get(0).getLandmark(HandPoints.INDEX_TIP.getValue()).getX();
-            float puntoB_Y = landmarkList.get(0).getLandmark(HandPoints.INDEX_TIP.getValue()).getY();
-            boolean flagCrab = Utils.getXYDistanceInLevels(Constants.NUMERO_LIVELLI, landmarkList.get(0), puntoA_X, puntoA_Y, puntoB_X, puntoB_Y) <= range;
+            float puntoThumbX = landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()).getX();
+            float puntoThumbY = landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()).getY();
+            float puntoIndexX = landmarkList.get(0).getLandmark(HandPoints.INDEX_TIP.getValue()).getX();
+            float puntoIndexY = landmarkList.get(0).getLandmark(HandPoints.INDEX_TIP.getValue()).getY();
+            boolean flagCrab = Utils.getXYDistanceInLevels(Constants.NUMERO_LIVELLI, landmarkList.get(0), puntoThumbX, puntoThumbY, puntoIndexX, puntoIndexY) <= range;
 
 
             if (firstTime == false) {
                 firstTime = true;
-                puntiPrec.add(0, puntoA_X);
-                puntiPrec.add(1, puntoA_Y);
+                puntiPrec.add(0, puntoThumbX);
+                puntiPrec.add(1, puntoThumbY);
             }
 
 
             if (flagCrab) {
-                delta.add(0, puntoA_X - puntiPrec.get(0));//x
-                delta.add(1, puntoA_Y - puntiPrec.get(1));//y   //qui delta rappresenta un vettore
-                //Log.println(Log.DEBUG,"debugg",delta.get(0)*10000+" "+ delta.get(1)*10000);
+                delta.add(0, puntoThumbX - puntiPrec.get(0));//x
+                delta.add(1, puntoThumbY - puntiPrec.get(1));//y   //qui delta rappresenta un vettore
             } else {
                 this.clearDelta();
             }
 
+            List<Integer> indexError = new ArrayList<Integer>(2);
+            indexError.add(43);
+            indexError.add(43);
+            List<LandmarkProto.NormalizedLandmark> normalizedLandmarkList = new ArrayList<LandmarkProto.NormalizedLandmark>();
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.INDEX_BASE.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.INDEX_LOWER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.INDEX_UPPER.getValue()));
+            normalizedLandmarkList.add(handsResult.multiHandLandmarks().get(0).getLandmark(HandPoints.INDEX_TIP.getValue()));
 
-            return flagCrab;
+
+            return flagCrab && !VectorUtils.checkInLineNormalized(normalizedLandmarkList, indexError);
         }
         return false;
     }

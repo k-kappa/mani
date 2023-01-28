@@ -1,9 +1,13 @@
 package com.hands.gesture;
 
+import android.util.Log;
+
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.HandPoints;
 import com.hands.utils.TimedPoint;
+import com.hands.utils.VectorUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,8 +80,20 @@ public class ScrollPageGesture implements IHandGesture {
     public int checGesture(List<LandmarkProto.NormalizedLandmarkList> landmarkList) {
         if (landmarkList.size() > 0) {
             int errore = 8;
+            //1 ->destra 2->sinistra
 
-            return scorrimento(landmarkList.get(0).getLandmarkList(), errore);
+            List<Integer> errors = new ArrayList<>(2);
+            errors.add(43);
+            errors.add(43);
+            List<LandmarkProto.NormalizedLandmark> pollice = new ArrayList<>();
+            pollice.add(landmarkList.get(0).getLandmark(HandPoints.THUMB_BASE.getValue()));
+            pollice.add(landmarkList.get(0).getLandmark(HandPoints.THUMB_LOWER.getValue()));
+            pollice.add(landmarkList.get(0).getLandmark(HandPoints.THUMB_UPPER.getValue()));
+            pollice.add(landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()));
+            boolean checkPolliceStorto = !VectorUtils.checkInLineNormalized(pollice, errors);
+
+            Log.d("checkPolliceStorto", String.valueOf(checkPolliceStorto));
+            return scorrimento(landmarkList.get(0).getLandmarkList(), errore) - (checkPolliceStorto ? 10 : 0);
         }
         return -1;
     }

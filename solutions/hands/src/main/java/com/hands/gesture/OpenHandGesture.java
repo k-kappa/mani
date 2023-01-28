@@ -27,7 +27,7 @@ public class OpenHandGesture implements IHandGesture {
             int errore = 6;
 
             HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<>();
-            improntaAnalizzata.put(HandPoints.THUMB_TIP, 35);//valori rilevati empiricamente su 70 livelli totali
+            improntaAnalizzata.put(HandPoints.THUMB_TIP, 42);//valori rilevati empiricamente su 70 livelli totali
             improntaAnalizzata.put(HandPoints.INDEX_TIP, 63);
             improntaAnalizzata.put(HandPoints.MIDDLE_TIP, 67);
             improntaAnalizzata.put(HandPoints.RING_TIP, 62);
