@@ -39,6 +39,7 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.net.URISyntaxException;
 
 // per relazione ricordarsi di aggiungere le dipendenze -> iText per creare il pdf e pdfviewer per visualizzarlo
 
@@ -232,8 +233,19 @@ public class PdfActivity extends AppCompatActivity {
                             }
 
                             if (checkThumbUp && (System.currentTimeMillis() - lastExecutionTime) > 5000) {
+
                                 lastExecutionTime = System.currentTimeMillis();
                                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                emailIntent.setType("application/pdf");
+                                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"destinatario@example.com"});
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body email");
+                                try {
+                                    emailIntent.putExtra(Intent.EXTRA_STREAM, Intent.parseUri(pdfFile.toString(), 0));
+                                } catch (URISyntaxException e) {
+                                    e.printStackTrace();
+                                }
+                                startActivity(Intent.createChooser(emailIntent, "Invia email..."));
                                 emailIntent.setType("text/plain");
                                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"destinatario@example.com"});
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
