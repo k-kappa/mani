@@ -56,7 +56,7 @@ public class PdfActivity extends AppCompatActivity {
     private AlertDialog dialog;
     private View dialogView;
     private TextView dialogTitle;
-    private Button pdf1,pdf2,pdf3;
+    private Button pdf1, pdf2, pdf3;
 
     //gestures
     PinchGesture pinchGesture = new PinchGesture();
@@ -100,7 +100,7 @@ public class PdfActivity extends AppCompatActivity {
 
         //caricamento del pdf
         a = 0;
-        if (a==0){
+        if (a == 0) {
             pdfFile = new File(getFilesDir(), "documento1.pdf");
             //System.out.println("PDF FILE: " + pdfFile);
             //showToast("PDF FILE: " + pdfFile);
@@ -116,7 +116,6 @@ public class PdfActivity extends AppCompatActivity {
                     .setDuration(1000)
                     .start();
         }
-
 
 
         //collego bottoni a funzioni
@@ -244,19 +243,28 @@ public class PdfActivity extends AppCompatActivity {
                             }
 
 
-                            if(checkCrab){
-                                float x = crabGesture.getVettoreX()*500;
-                                float y = crabGesture.getVettoreY()*500;
-                                pdfView.moveRelativeTo(x,y);
+                            if (checkCrab) {
+                                float x = crabGesture.getVettoreX() * 500;
+                                float y = crabGesture.getVettoreY() * 500;
+                                pdfView.moveRelativeTo(x, y);
                                 //showToast("Crab");
                                 //Log.println(Log.DEBUG,"debug",x+" "+ y);
                             }
 
-                            if(checkOpenHand){
-                                pdfView.moveRelativeTo(0,-40);
+                            if (checkOpenHand) {
+                                pdfView.moveRelativeTo(0, -40);
                             }
 
-                            if(check3Hand && (System.currentTimeMillis() - lastExecutionTime2) > 5000){
+                            //thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            if (direzione_gesture==1){
+
+                                pdfView.jumpTo(pdfView.getCurrentPage() +1, true);
+                            } else if (direzione_gesture==2){
+                                pdfView.jumpTo(pdfView.getCurrentPage() -1, true);
+                            }
+
+                            if (check3Hand && (System.currentTimeMillis() - lastExecutionTime2) > 5000) {
                                 lastExecutionTime2 = System.currentTimeMillis();
                                 showToast("Scegli il pdf");
                                 LayoutInflater inflater = getLayoutInflater();
@@ -316,14 +324,7 @@ public class PdfActivity extends AppCompatActivity {
                                 pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true);
                                 showToast("thumb up");
                             }*/
-                            //thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
-                            if (direzione_gesture==1){
 
-                                pdfView.jumpTo(pdfView.getCurrentPage() +1, true);
-                            } else if (direzione_gesture==2){
-                                pdfView.jumpTo(pdfView.getCurrentPage() -1, true);
-                            }
                                 pdf3.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
