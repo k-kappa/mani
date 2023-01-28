@@ -20,6 +20,7 @@ import com.google.mediapipe.solutioncore.VideoInput;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
+import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThumbUpGesture;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
@@ -232,7 +233,8 @@ public class PdfActivity extends AppCompatActivity {
 
     private void setupStreamingModePipeline(InputSource inputSource) {
         HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
-        ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+        //ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
+        ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
 
         this.inputSource2 = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -263,12 +265,18 @@ public class PdfActivity extends AppCompatActivity {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
+                            /*if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
                                 pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true);
                                 showToast("thumb up");
-                            }
+                            }*/
                             //thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            if (direzione_gesture==1){
 
+                                pdfView.jumpTo(pdfView.getCurrentPage() +1, true);
+                            } else if (direzione_gesture==2){
+                                pdfView.jumpTo(pdfView.getCurrentPage() -1, true);
+                            }
 
                         }
                     });

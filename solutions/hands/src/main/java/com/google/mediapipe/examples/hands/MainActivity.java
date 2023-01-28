@@ -362,7 +362,7 @@ public class MainActivity extends AppCompatActivity {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
-                            boolean scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            int scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
                             /*
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
@@ -380,8 +380,10 @@ public class MainActivity extends AppCompatActivity {
                                 pinch.setTextColor(Color.RED);
                             }*/
 
-                            if (scrollGestureCheck) {
+                            if (scrollGestureCheck==1) {
                                 scroll.setTextColor(Color.GREEN);
+                            } else if (scrollGestureCheck==2) {
+                                scroll.setTextColor(Color.YELLOW);
                             } else {
                                 scroll.setTextColor(Color.RED);
                             }
