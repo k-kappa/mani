@@ -1,6 +1,7 @@
 package com.hands.gesture;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
+import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.HandPoints;
 import com.hands.utils.TimedPoint;
 import java.util.ArrayList;
@@ -77,7 +78,7 @@ public class ScrollPageGesture implements IHandGesture {
     }
 
     @Override
-    public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
+    public boolean checkGesture(HandsResult sd) {
         return false;
     }
 
