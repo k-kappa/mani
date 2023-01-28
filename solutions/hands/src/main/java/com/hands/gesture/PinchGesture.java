@@ -23,6 +23,7 @@ public class PinchGesture implements IHandGesture {
 
         List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
 
+        //almeno una mano
         if (landmarkList.size() > 0) {
 
             HashMap<HandPoints, Integer> targetLevels = new HashMap<HandPoints, Integer>();

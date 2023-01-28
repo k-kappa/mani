@@ -334,6 +334,9 @@ public class PdfActivity extends AppCompatActivity {
                                 dialog.show();
                             }
 
+
+                            //per scroll in su
+                            //pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true));
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);
