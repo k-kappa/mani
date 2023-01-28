@@ -12,22 +12,25 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class OpenHandGesture implements IHandGesture {
+public class TreGesture implements IHandGesture {
 
-    private static final String NAME = "OPEN_HAND";
-    private static final int GESTURE_ID = 4;
+    private static final String NAME = "THUMB_UP";
+    private static final int GESTURE_ID = 1;
+
+    private static final long timer = 5000;
 
     @Override
     public boolean checkGesture(List<LandmarkProto.LandmarkList> landmarkList) {
         if (landmarkList.size() > 0) {
-            int errore = 6;
+            int errore = 8;
 
-            HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<HandPoints, Integer>();
-            improntaAnalizzata.put(HandPoints.THUMB_TIP, 35);//valori rilevati empiricamente su 70 livelli totali
-            improntaAnalizzata.put(HandPoints.INDEX_TIP, 63);
+            //impronta pollice in su
+            HashMap<HandPoints, Integer> improntaAnalizzata = new HashMap<HandPoints, Integer>(); //fa fatica quando non si vedono parte delle dita
+            improntaAnalizzata.put(HandPoints.THUMB_TIP, 48);//valori rilevati empiricamente su 70 livelli totali
+            improntaAnalizzata.put(HandPoints.INDEX_TIP, 65);
             improntaAnalizzata.put(HandPoints.MIDDLE_TIP, 67);
-            improntaAnalizzata.put(HandPoints.RING_TIP, 62);
-            improntaAnalizzata.put(HandPoints.PINKY_TIP, 54);
+            improntaAnalizzata.put(HandPoints.RING_TIP, 39);
+            improntaAnalizzata.put(HandPoints.PINKY_TIP, 32);
 
             HashMap<HandPoints, Integer> actualLevels = Utils.fingerLevelsToWrist(Constants.NUMERO_LIVELLI, landmarkList.get(0));
 
@@ -53,5 +56,3 @@ public class OpenHandGesture implements IHandGesture {
         return GestureType.STATIC;
     }
 }
-
-
