@@ -11,6 +11,10 @@ public class Utils {
         return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2) + Math.pow(z1 - z2, 2));
     }
 
+    public static float getDistance(float x1, float y1, float x2, float y2) {
+        return (float) Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+    }
+
     public static float getLandmarkDistance(LandmarkProto.Landmark point1, LandmarkProto.Landmark point2) {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
@@ -19,8 +23,16 @@ public class Utils {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
+    public static boolean isBetween(float value, float low, float high) {
+        return value >= low && value <= high;
+    }
+
     public static boolean isBetween(int value, int low, int high) {
         return value >= low && value <= high;
+    }
+
+    public static boolean isInsideSphere(float point_x, float point_y, float point_z, float centre_X, float centre_y, float centre_z, float radius) {
+        return (point_x - centre_X) * (point_x - centre_X) + (point_y - centre_y) * (point_y - centre_y) + (point_z + centre_z) * (point_z + centre_z) < radius * radius;
     }
 
     public static boolean checkGesture(List<HandPoints> relevantPoints, HashMap<HandPoints, Integer> targetLevels, HashMap<HandPoints, Integer> fingerLevels, int error) {
@@ -30,6 +42,21 @@ public class Utils {
             }
         }
         return true;
+    }
+
+    public static  int getXYDistanceInLevels(int numLevels, LandmarkProto.NormalizedLandmarkList landmarks, float puntoA_X, float puntoA_Y,float puntoB_X , float puntoB_Y) {
+
+        float distanzaMassima = Utils.maxDistance(landmarks);
+
+        return Math.round((getDistance(puntoA_X,puntoA_Y,puntoB_X,puntoB_Y) * numLevels) / distanzaMassima);
+    }
+
+    private static float maxDistance(LandmarkProto.NormalizedLandmarkList landmarks) {
+        float distanzaMassima = getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_TIP.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_UPPER.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_UPPER.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_LOWER.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_LOWER.getValue()), landmarks.getLandmark(HandPoints.MIDDLE_BASE.getValue()));
+        distanzaMassima += getLandmarkDistance(landmarks.getLandmark(HandPoints.MIDDLE_BASE.getValue()), landmarks.getLandmark(HandPoints.WRIST.getValue()));
+        return distanzaMassima;
     }
 
     private static float maxDistance(LandmarkProto.LandmarkList landmarks) {
