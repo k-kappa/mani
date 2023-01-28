@@ -46,6 +46,7 @@ import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.gesture.CrabGesture;
 import com.hands.gesture.OpenHandGesture;
 import com.hands.gesture.PinchGesture;
+import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThumbUpGesture;
 import com.hands.gesture.TreGesture;
 import com.itextpdf.text.Document;
@@ -261,7 +262,7 @@ public class MainActivity extends AppCompatActivity {
         // Connects MediaPipe Hands solution to the user-defined HandsResultImageView.
         hands.setResultListener(
                 handsResult -> {
-                    logWristLandmark(handsResult, /*showPixelValues=*/ true);
+                    //logWristLandmark(handsResult, /*showPixelValues=*/ true);
                     imageView.setHandsResult(handsResult);
                     runOnUiThread(() -> imageView.update());
                 });
@@ -333,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
 
         ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
         PinchGesture pinchGesture = new PinchGesture();
+        ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
         CrabGesture crabGesture = new CrabGesture();
         OpenHandGesture openHandGesture = new OpenHandGesture();
         TreGesture treGesture = new TreGesture();
@@ -342,13 +344,18 @@ public class MainActivity extends AppCompatActivity {
         wristLog.setTextSize(18);
         wristLog.setTextColor(Color.RED);
         wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
-        TextView thumbUp = new TextView(this);
+        /*TextView thumbUp = new TextView(this);
         thumbUp.setText("Thumb up");
         thumbUp.setTextSize(18);
         thumbUp.setTextColor(Color.RED);
         TextView pinch = new TextView(this);
         pinch.setText("Pinch");
         pinch.setTextSize(18);
+        pinch.setTextColor(Color.RED);*/
+        TextView scroll = new TextView(this);
+        scroll.setText("Scroll");
+        scroll.setTextSize(18);
+        scroll.setTextColor(Color.RED);
         pinch.setTextColor(Color.RED);
         TextView crab = new TextView(this);
         crab.setText("Crab");
@@ -375,6 +382,9 @@ public class MainActivity extends AppCompatActivity {
         gestureChecksLayout.addView(openHand);
         gestureChecksLayout.addView(treHand);
 
+        //gestureChecksLayout.addView(thumbUp);
+        //gestureChecksLayout.addView(pinch);
+        gestureChecksLayout.addView(scroll);
 
         this.inputSource = inputSource;
         // Initializes a new MediaPipe Hands solution instance in the streaming mode.
@@ -403,11 +413,15 @@ public class MainActivity extends AppCompatActivity {
         glSurfaceView.setRenderInputImage(true);
         hands.setResultListener(
                 handsResult -> {
-                    logWristLandmark(handsResult, /*showPixelValues=*/ false);
+                    //logWristLandmark(handsResult, /*showPixelValues=*/ false);
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             wristLog.setText(handsResultGlRenderer.log);
+                            int scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            /*
+                            boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
+                            boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult.multiHandWorldLandmarks());
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             boolean crabGestureCheck = crabGesture.checkGesture(handsResult);
@@ -425,6 +439,14 @@ public class MainActivity extends AppCompatActivity {
                                 pinch.setTextColor(Color.GREEN);
                             } else {
                                 pinch.setTextColor(Color.RED);
+                            }*/
+
+                            if (scrollGestureCheck==1) {
+                                scroll.setTextColor(Color.GREEN);
+                            } else if (scrollGestureCheck==2) {
+                                scroll.setTextColor(Color.YELLOW);
+                            } else {
+                                scroll.setTextColor(Color.RED);
                             }
 
                             if(crabGestureCheck){
