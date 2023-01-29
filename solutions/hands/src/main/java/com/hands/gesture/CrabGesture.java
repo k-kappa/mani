@@ -22,7 +22,7 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
     private boolean firstTime;
 
     public CrabGesture() {
-        firstTime = false;
+        firstTime = true;
         delta = new ArrayList<Float>();
         puntiPrec = new ArrayList<Float>();
         delta.add(0, 0f);//x
@@ -48,8 +48,8 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
             boolean flagCrab = Utils.getXYDistanceInLevels(Constants.NUMERO_LIVELLI, landmarkList.get(0), puntoThumbX, puntoThumbY, puntoIndexX, puntoIndexY) <= range;
 
 
-            if (firstTime == false) {
-                firstTime = true;
+            if (firstTime) {
+                firstTime = false;
                 puntiPrec.add(0, puntoThumbX);
                 puntiPrec.add(1, puntoThumbY);
             }

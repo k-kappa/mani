@@ -44,11 +44,11 @@ import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.gesture.CrabGesture;
-import com.hands.gesture.OpenHandGesture;
+import com.hands.gesture.FourGesture;
 import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThumbUpGesture;
-import com.hands.gesture.TreGesture;
+import com.hands.gesture.ThreeGesture;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
@@ -336,8 +336,8 @@ public class MainActivity extends AppCompatActivity {
         PinchGesture pinchGesture = new PinchGesture();
         ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
         CrabGesture crabGesture = new CrabGesture();
-        OpenHandGesture openHandGesture = new OpenHandGesture();
-        TreGesture treGesture = new TreGesture();
+        FourGesture fourGesture = new FourGesture();
+        ThreeGesture threeGesture = new ThreeGesture();
 
         TextView wristLog = new TextView(this);
         wristLog.setText(String.valueOf(handsResultGlRenderer.log));
@@ -422,8 +422,8 @@ public class MainActivity extends AppCompatActivity {
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             boolean crabGestureCheck = crabGesture.checkGesture(handsResult);
-                            boolean openHandCheck = openHandGesture.checkGesture(handsResult);
-                            boolean threeHandCheck = treGesture.checkGesture(handsResult);
+                            boolean openHandCheck = fourGesture.checkGesture(handsResult);
+                            boolean threeHandCheck = threeGesture.checkGesture(handsResult);
                             if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);
                                 //Intent intent1 = new Intent(MainActivity.this, PdfActivity.class);

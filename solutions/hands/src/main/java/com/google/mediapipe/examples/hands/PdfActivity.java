@@ -18,7 +18,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.github.barteksc.pdfviewer.listener.OnRenderListener;
 import com.google.mediapipe.solutioncore.CameraInput;
 import com.google.mediapipe.solutioncore.SolutionGlSurfaceView;
 import com.google.mediapipe.solutioncore.VideoInput;
@@ -26,19 +25,13 @@ import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.gesture.CrabGesture;
-import com.hands.gesture.OpenHandGesture;
+import com.hands.gesture.FourGesture;
 import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThumbUpGesture;
-import com.hands.gesture.TreGesture;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.hands.gesture.ThreeGesture;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.net.URISyntaxException;
 
 // per relazione ricordarsi di aggiungere le dipendenze -> iText per creare il pdf e pdfviewer per visualizzarlo
@@ -63,8 +56,8 @@ public class PdfActivity extends AppCompatActivity {
     PinchGesture pinchGesture = new PinchGesture();
     ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
     CrabGesture crabGesture = new CrabGesture();
-    OpenHandGesture openHandGesture = new OpenHandGesture();
-    TreGesture treGesture = new TreGesture();
+    FourGesture fourGesture = new FourGesture();
+    ThreeGesture threeGesture = new ThreeGesture();
     long lastExecutionTime = 0;
     long lastExecutionTime2 = 0;
 
@@ -222,8 +215,8 @@ public class PdfActivity extends AppCompatActivity {
                             boolean checkPinch = pinchGesture.checkGesture(handsResult);
                             boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult);
                             boolean checkCrab = crabGesture.checkGesture(handsResult);
-                            boolean checkOpenHand = openHandGesture.checkGesture(handsResult);
-                            boolean check3Hand = treGesture.checkGesture(handsResult);
+                            boolean checkOpenHand = fourGesture.checkGesture(handsResult);
+                            boolean check3Hand = threeGesture.checkGesture(handsResult);
 
                             if (checkPinch && !checkThumbUp) {
                                 //zoom 1 - 3, pinch 10 - 50
