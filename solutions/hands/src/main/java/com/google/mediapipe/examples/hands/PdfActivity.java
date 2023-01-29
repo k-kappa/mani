@@ -211,14 +211,14 @@ public class PdfActivity extends AppCompatActivity {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-
+                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
                             boolean checkPinch = pinchGesture.checkGesture(handsResult);
                             boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult);
                             boolean checkCrab = crabGesture.checkGesture(handsResult);
                             boolean checkOpenHand = fourGesture.checkGesture(handsResult);
                             boolean check3Hand = threeGesture.checkGesture(handsResult);
 
-                            if (checkPinch && !checkThumbUp) {
+                            if (checkPinch && !checkThumbUp && direzione_gesture <= 0) {
                                 //zoom 1 - 3, pinch 10 - 50
                                 Log.d("GESTURE", "Pinch distance = " + pinchGesture.getPinchDistance(handsResult.multiHandWorldLandmarks()));
                                 //pdfView.zoomTo(pinchGesture.getPinchDistance(handsResult.multiHandWorldLandmarks()));
@@ -261,13 +261,15 @@ public class PdfActivity extends AppCompatActivity {
                             }
 
                             //thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks());
-                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
-                            if (direzione_gesture==1){
+                            if (direzione_gesture >= 0 && !checkPinch){
+                                if (direzione_gesture==1){
 
-                                pdfView.jumpTo(pdfView.getCurrentPage() +1, true);
-                            } else if (direzione_gesture==2){
-                                pdfView.jumpTo(pdfView.getCurrentPage() -1, true);
+                                    pdfView.jumpTo(pdfView.getCurrentPage() +1, true);
+                                } else if (direzione_gesture==2){
+                                    pdfView.jumpTo(pdfView.getCurrentPage() -1, true);
+                                }
                             }
+
 
                             if (check3Hand && (System.currentTimeMillis() - lastExecutionTime2) > 5000) {
                                 lastExecutionTime2 = System.currentTimeMillis();
