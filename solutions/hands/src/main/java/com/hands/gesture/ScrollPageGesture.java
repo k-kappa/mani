@@ -6,6 +6,7 @@ import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.HandPoints;
 import com.hands.utils.TimedPoint;
+import com.hands.utils.Utils;
 import com.hands.utils.VectorUtils;
 
 import java.util.ArrayList;
@@ -20,34 +21,13 @@ public class ScrollPageGesture implements IHandGesture {
     private float last8landmarks = 0;
     private int puntaIndice = HandPoints.INDEX_TIP.getValue();
 
-    public boolean indiceMedioAlti(List<LandmarkProto.NormalizedLandmark> landmarks){
-
-        float y = landmarks.get(8).getY();
-        float y1 = landmarks.get(7).getY();
-        float y2 = landmarks.get(6).getY();
-
-        float y3 = landmarks.get(12).getY();
-        float y4 = landmarks.get(11).getY();
-        float y5 = landmarks.get(10).getY();
-
-        for (int i = 0; i <= 20; i++) {
-            if (i == 8 || i == 7 || i==6 || i==12 || i==11 || i==10) continue;
-
-            // + la y è piccola, + è verso l'alto
-            if (y > landmarks.get(i).getY() || y2 > landmarks.get(i).getY() || y1 > landmarks.get(i).getY() ||
-                    y3 > landmarks.get(i).getY() || y4 > landmarks.get(i).getY() || y5 > landmarks.get(i).getY()){
-                return false;
-            }
-        }
-        return true;
-    }
 
     public int scorrimento(List<LandmarkProto.NormalizedLandmark> landmarks, int error){
 
         List<TimedPoint> t = new ArrayList<TimedPoint>();
         TimedPoint temp = new TimedPoint();
 
-        if (indiceMedioAlti(landmarks)){
+        if (Utils.indiceMedioAlti(landmarks)){
             for (int i = 0; i <= 20; i++){
                 t.add(i, temp.set(landmarks.get(i).getX(),landmarks.get(i).getY()));
             }

@@ -43,7 +43,7 @@ public class PinchGesture implements IHandGesture {
                     landmarkList.get(0));
 
             return Utils.checkGesture(relevantPoints, targetLevels, actualLevels, 8) &&
-                    thumbTipBaseLevel >= 17;
+                    thumbTipBaseLevel >= 17 && !Utils.indiceMedioAlti(handsResult.multiHandLandmarks().get(0).getLandmarkList());
         }
 
         return false;
