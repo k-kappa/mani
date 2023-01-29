@@ -109,7 +109,7 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
 
     public void clearDelta() {
         delta.clear();
-        firstTime = false;
+        firstTime = true;
     }
 
     //@Override
