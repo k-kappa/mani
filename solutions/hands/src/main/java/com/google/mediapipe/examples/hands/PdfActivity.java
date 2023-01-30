@@ -150,7 +150,7 @@ public class PdfActivity extends BaseActivity {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            int direzione_gesture = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            int direzione_gesture = scrollPageGesture.checkGesture(handsResult.multiHandLandmarks());
                             boolean checkPinch = pinchGesture.checkGesture(handsResult);
                             boolean checkThumbUp = thumbUpGesture.checkGesture(handsResult);
                             boolean checkCrab = crabGesture.checkGesture(handsResult);

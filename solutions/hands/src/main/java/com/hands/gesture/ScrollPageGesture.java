@@ -11,7 +11,7 @@ import com.hands.utils.VectorUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollPageGesture implements IHandGesture {
+public class ScrollPageGesture{
 
     private List<TimedPoint> lastTimedPoints = new ArrayList<TimedPoint>();
     private float last8landmarks = 0;
@@ -53,7 +53,7 @@ public class ScrollPageGesture implements IHandGesture {
     }
 
 
-    public int checGesture(List<LandmarkProto.NormalizedLandmarkList> landmarkList) {
+    public int checkGesture(List<LandmarkProto.NormalizedLandmarkList> landmarkList) {
         if (landmarkList.size() > 0) {
             int errore = 8;
             //1 ->destra 2->sinistra

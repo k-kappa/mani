@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity {
                         public void run() {
 
                             wristLog.setText(handsResultGlRenderer.log);
-                            int scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            int scrollGestureCheck = scrollPageGesture.checkGesture(handsResult.multiHandLandmarks());
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             boolean crabGestureCheck = crabGesture.checkGesture(handsResult);
