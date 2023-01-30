@@ -17,7 +17,6 @@ package com.google.mediapipe.examples.hands;
 import android.opengl.GLES20;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
-import com.google.mediapipe.formats.proto.LandmarkProto.Landmark;
 import com.google.mediapipe.formats.proto.LandmarkProto.LandmarkList;
 import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.ResultGlRenderer;
@@ -31,7 +30,6 @@ import com.hands.utils.VectorUtils;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
-import java.text.DecimalFormat;
 import java.util.List;
 
 
@@ -39,7 +37,6 @@ import java.util.List;
  * A custom implementation of {@link ResultGlRenderer} to render {@link HandsResult}.
  */
 public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
-    private static final String TAG = "HandsResultGlRenderer";
 
     private static final float[] LEFT_HAND_CONNECTION_COLOR = new float[]{0.2f, 1f, 0.2f, 1f};
     private static final float[] RIGHT_HAND_CONNECTION_COLOR = new float[]{1f, 0.2f, 0.2f, 1f};
@@ -49,7 +46,6 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
     private static final float HOLLOW_CIRCLE_RADIUS = 0.01f;
     private static final float[] LEFT_HAND_LANDMARK_COLOR = new float[]{1f, 0.2f, 0.2f, 1f};
     private static final float[] RIGHT_HAND_LANDMARK_COLOR = new float[]{0.2f, 1f, 0.2f, 1f};
-    private static final float[] DRAWING_COLOR = new float[]{1f, 1f, 1f, 1f};
     private static final float LANDMARK_RADIUS = 0.008f;
     private static final int NUM_SEGMENTS = 120;
     private static final String VERTEX_SHADER =
@@ -196,37 +192,6 @@ public class HandsResultGlRenderer implements ResultGlRenderer<HandsResult> {
     }
 
     //_____________________________________________________
-    // nuovo codice test scrive su feed camera
-    private void drawDistanceLine(List<Landmark> handLandmarkList, float[] colorArray) {
-        GLES20.glUniform4fv(colorHandle, 1, colorArray, 0);
-        Landmark wrist = handLandmarkList.get(0);
-        float x = 0.25f;
-        float y = 0.05f;
-        for (int i = 8; i < 21; i += 4) {
-            Landmark finger = handLandmarkList.get(i);
-            float distance = (float) Math.sqrt(Math.pow(finger.getX() - wrist.getX(), 2) + Math.pow(finger.getY() - wrist.getY(), 2) + Math.pow(finger.getZ() - wrist.getZ(), 2));
-            float[] vertex = {x + (0.05f * ((i - 8) / 4)), y, x + (0.05f * ((i - 8) / 4)), y + distance * 2};
-            FloatBuffer vertexBuffer =
-                    ByteBuffer.allocateDirect(vertex.length * 4)
-                            .order(ByteOrder.nativeOrder())
-                            .asFloatBuffer()
-                            .put(vertex);
-            vertexBuffer.position(0);
-            GLES20.glEnableVertexAttribArray(positionHandle);
-            GLES20.glVertexAttribPointer(positionHandle, 2, GLES20.GL_FLOAT, false, 0, vertexBuffer);
-            GLES20.glDrawArrays(GLES20.GL_LINES, 0, 2);
-        }
-    }
-    //_____________________________________________________
-
-    /**
-     * Deletes the shader program.
-     *
-     * <p>This is only necessary if one wants to release the program while keeping the context around.
-     */
-    public void release() {
-        GLES20.glDeleteProgram(program);
-    }
 
     private void drawConnections(List<NormalizedLandmark> handLandmarkList, float[] colorArray) {
         GLES20.glUniform4fv(colorHandle, 1, colorArray, 0);

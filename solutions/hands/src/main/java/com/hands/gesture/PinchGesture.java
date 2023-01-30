@@ -1,24 +1,17 @@
 package com.hands.gesture;
 
-import android.app.Activity;
-
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.Constants;
 import com.hands.utils.HandPoints;
 import com.hands.utils.Utils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class PinchGesture implements IHandGesture {
 
-    private static final String NAME = "PINCH";
-    private static final int GESTURE_ID = 2;
-
-    @Override
     public boolean checkGesture(HandsResult handsResult) {
 
         List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
@@ -58,18 +51,4 @@ public class PinchGesture implements IHandGesture {
         return -1;
     }
 
-    @Override
-    public String getName() {
-        return this.NAME;
-    }
-
-    @Override
-    public int getGestureId() {
-        return this.GESTURE_ID;
-    }
-
-    @Override
-    public GestureType getGestureType() {
-        return GestureType.STATIC;
-    }
 }

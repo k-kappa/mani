@@ -23,7 +23,7 @@ public enum HandPoints {
     PINKY_UPPER(19),
     PINKY_TIP(20);
 
-    private int value;
+    private final int value;
 
     HandPoints(int value) {
         this.value = value;

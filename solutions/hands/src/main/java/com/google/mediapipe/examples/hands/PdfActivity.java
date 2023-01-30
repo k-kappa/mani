@@ -36,12 +36,9 @@ import java.net.URISyntaxException;
 
 // per relazione ricordarsi di aggiungere le dipendenze -> iText per creare il pdf e pdfviewer per visualizzarlo
 
-public class PdfActivity extends AppCompatActivity {
+public class PdfActivity extends BaseActivity {
 
     Button zoomIn, zoomOut, share, scrollDown;
-    private Hands hands;
-    private VideoInput videoInput;
-    private CameraInput cameraInput;
     private File pdfFile;
     private PDFView pdfView;
     int a;
@@ -49,39 +46,17 @@ public class PdfActivity extends AppCompatActivity {
     //AlertDialog
     private AlertDialog dialog;
     private View dialogView;
-    private TextView dialogTitle;
     private Button pdf1, pdf2, pdf3;
 
-    //gestures
-    PinchGesture pinchGesture = new PinchGesture();
-    ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
-    CrabGesture crabGesture = new CrabGesture();
-    FourGesture fourGesture = new FourGesture();
-    ThreeGesture threeGesture = new ThreeGesture();
     long lastExecutionTime = 0;
     long lastExecutionTime2 = 0;
-
-    private SolutionGlSurfaceView<HandsResult> glSurfaceView;
-
-    // Run the pipeline and the model inference on GPU or CPU.
-    private static final boolean RUN_ON_GPU = true;
-
-    private enum InputSource {
-        UNKNOWN,
-        IMAGE,
-        VIDEO,
-        CAMERA,
-    }
-
-    private ActivityResultLauncher<Intent> imageGetter;
-    private InputSource inputSource2 = InputSource.UNKNOWN;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pdf);
 
-        setupLiveDemoUiComponents();
+        this.setupLiveDemoUiComponents();
 
         //inizializzazione bottoni da eliminare quando colleghiamo le gesture
         zoomIn = findViewById(R.id.zoom_in);
@@ -152,60 +127,24 @@ public class PdfActivity extends AppCompatActivity {
         showToast("Effettuare una gesture");
     }
 
-    /*
-        FUNZIONI PER MESSAGGIO E CREAZIONE PDF
-     */
-    private void showToast(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
-    //METODI ATTIVAZIONE PIPELINE CAMERA
-    private void stopCurrentPipeline() {
-        if (cameraInput != null) {
-            cameraInput.setNewFrameListener(null);
-            cameraInput.close();
-        }
-        if (videoInput != null) {
-            videoInput.setNewFrameListener(null);
-            videoInput.close();
-        }
-        if (glSurfaceView != null) {
-            glSurfaceView.setVisibility(View.GONE);
-        }
-        if (hands != null) {
-            hands.close();
-        }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
+
+
+
+    // METODI PER L'ATTIVAZIONE DELLA PIPELINE IN MODALITA' PDF
 
     private void setupStreamingModePipeline(InputSource inputSource) {
-        HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
-        //ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
-        ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
 
-        this.inputSource2 = inputSource;
-        // Initializes a new MediaPipe Hands solution instance in the streaming mode.
-        hands =
-                new Hands(
-                        this,
-                        HandsOptions.builder()
-                                .setStaticImageMode(false)
-                                .setMaxNumHands(2)
-                                .setRunOnGpu(RUN_ON_GPU)
-                                .build());
+        super.firstSetupStreamingModePipeline(inputSource);
 
-        if (inputSource == InputSource.CAMERA) {
-            cameraInput = new CameraInput(this);
-            cameraInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-        } else if (inputSource == inputSource.VIDEO) {
-            videoInput = new VideoInput(this);
-            videoInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-        }
-
-        // Initializes a new Gl surface view with a user-defined HandsResultGlRenderer.
-        glSurfaceView =
-                new SolutionGlSurfaceView<>(this, hands.getGlContext(), hands.getGlMajorVersion());
-        glSurfaceView.setSolutionResultRenderer(handsResultGlRenderer);
-        glSurfaceView.setRenderInputImage(true);
         hands.setResultListener(
                 handsResult -> {
                     this.runOnUiThread(new Runnable() {
@@ -356,71 +295,26 @@ public class PdfActivity extends AppCompatActivity {
                                 dialog.show();
                             }
 
-
-                            //per scroll in su
-                            //pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true));
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);
                     glSurfaceView.requestRender();
                 });
 
-
-        // The runnable to start camera after the gl surface view is attached.
-        // For video input source, videoInput.start() will be called when the video uri is available.
-        if (inputSource == InputSource.CAMERA) {
-            glSurfaceView.post(this::startCamera);
-        }
-
-        // Updates the preview layout.
-        FrameLayout frameLayout = findViewById(R.id.frame_layout);
-        //imageView.setVisibility(View.GONE);
-        frameLayout.removeAllViewsInLayout();
-        frameLayout.addView(glSurfaceView);
-
-        glSurfaceView.setVisibility(View.VISIBLE);
-        frameLayout.requestLayout();
+        super.lastSetupStreamingModePipeline(inputSource, null);
     }
 
-    private void startCamera() {
-        cameraInput.start(
-                this,
-                hands.getGlContext(),
-                CameraInput.CameraFacing.FRONT,
-                glSurfaceView.getWidth(),
-                glSurfaceView.getHeight());
+    protected void setupLiveDemoUiComponents() {
+        super.setupLiveDemoUiComponents();
+        this.setupStreamingModePipeline(InputSource.CAMERA);
     }
 
-    private void setupLiveDemoUiComponents() {
-        if (inputSource2 == InputSource.CAMERA) {
-            return;
-        }
-        stopCurrentPipeline();
-        setupStreamingModePipeline(InputSource.CAMERA);
+
+
+    // METODO DI UTILITA'
+    private void showToast(String message) {
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (inputSource2 == InputSource.CAMERA) {
-            // Restarts the camera and the opengl surface rendering.
-            cameraInput = new CameraInput(this);
-            cameraInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-            glSurfaceView.post(this::startCamera);
-            glSurfaceView.setVisibility(View.VISIBLE);
-        } else if (inputSource2 == InputSource.VIDEO) {
-            videoInput.resume();
-        }
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        if (inputSource2 == InputSource.CAMERA) {
-            glSurfaceView.setVisibility(View.GONE);
-            cameraInput.close();
-        } else if (inputSource2 == InputSource.VIDEO) {
-            videoInput.pause();
-        }
-    }
 }

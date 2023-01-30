@@ -3,7 +3,6 @@ package com.hands.gesture;
 import android.util.Log;
 
 import com.google.mediapipe.formats.proto.LandmarkProto;
-import com.google.mediapipe.solutions.hands.HandsResult;
 import com.hands.utils.HandPoints;
 import com.hands.utils.TimedPoint;
 import com.hands.utils.Utils;
@@ -14,15 +13,12 @@ import java.util.List;
 
 public class ScrollPageGesture implements IHandGesture {
 
-    private static final String NAME = "SCROLL";
-    private static final int GESTURE_ID = 3;
-
     private List<TimedPoint> lastTimedPoints = new ArrayList<TimedPoint>();
     private float last8landmarks = 0;
-    private int puntaIndice = HandPoints.INDEX_TIP.getValue();
+    private final int puntaIndice = HandPoints.INDEX_TIP.getValue();
 
 
-    public int scorrimento(List<LandmarkProto.NormalizedLandmark> landmarks, int error){
+    public int scorrimento(List<LandmarkProto.NormalizedLandmark> landmarks){
 
         List<TimedPoint> t = new ArrayList<TimedPoint>();
         TimedPoint temp = new TimedPoint();
@@ -73,28 +69,9 @@ public class ScrollPageGesture implements IHandGesture {
             boolean checkPolliceStorto = !VectorUtils.checkInLineNormalized(pollice, errors);
 
             Log.d("checkPolliceStorto", String.valueOf(checkPolliceStorto));
-            return scorrimento(landmarkList.get(0).getLandmarkList(), errore) - (checkPolliceStorto ? 10 : 0);
+            return scorrimento(landmarkList.get(0).getLandmarkList()) - (checkPolliceStorto ? 10 : 0);
         }
         return -1;
     }
 
-    @Override
-    public boolean checkGesture(HandsResult sd) {
-        return false;
-    }
-
-    @Override
-    public String getName() {
-        return this.NAME;
-    }
-
-    @Override
-    public int getGestureId() {
-        return this.GESTURE_ID;
-    }
-
-    @Override
-    public GestureType getGestureType() {
-        return GestureType.DYNAMIC;
-    }
 }
