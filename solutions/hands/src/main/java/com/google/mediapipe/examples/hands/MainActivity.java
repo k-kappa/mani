@@ -15,11 +15,8 @@
 package com.google.mediapipe.examples.hands;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -29,17 +26,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.exifinterface.media.ExifInterface;
 
-import com.google.mediapipe.formats.proto.LandmarkProto.Landmark;
-import com.google.mediapipe.formats.proto.LandmarkProto.NormalizedLandmark;
 import com.google.mediapipe.solutioncore.CameraInput;
 import com.google.mediapipe.solutioncore.SolutionGlSurfaceView;
-import com.google.mediapipe.solutioncore.VideoInput;
-import com.google.mediapipe.solutions.hands.HandLandmark;
 import com.google.mediapipe.solutions.hands.Hands;
 import com.google.mediapipe.solutions.hands.HandsOptions;
 import com.google.mediapipe.solutions.hands.HandsResult;
@@ -57,49 +47,23 @@ import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Main activity of MediaPipe Hands app.
  */
-public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
 
-    private Hands hands;
-    // Run the pipeline and the model inference on GPU or CPU.
-    private static final boolean RUN_ON_GPU = true;
-    Button btn;
+public class MainActivity extends BaseActivity {
 
-    private File pdfFile, pdfFile1, pdfFile2;
-
-    private enum InputSource {
-        UNKNOWN,
-        IMAGE,
-        VIDEO,
-        CAMERA,
-    }
-
-    private InputSource inputSource = InputSource.UNKNOWN;
-
-    // Image demo UI and image loader components.
-    private ActivityResultLauncher<Intent> imageGetter;
-    private HandsResultImageView imageView;
-    // Video demo UI and video loader components.
-    private VideoInput videoInput;
-    private ActivityResultLauncher<Intent> videoGetter;
-    // Live camera demo UI and camera components.
-    private CameraInput cameraInput;
-
-    private SolutionGlSurfaceView<HandsResult> glSurfaceView;
+    // Dichiarazione delle TextView per il riconoscimento delle gesture
+    private TextView wristLog, thumbUp, pinch, scroll, crab, openHand, treHand;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        setupStaticImageDemoUiComponents();
-        setupVideoDemoUiComponents();
         setupLiveDemoUiComponents();
+
         //creo i 3 pdf da mostrare
         //per efficienza i pdf vengono creati solo al primo avvio dell'app
         //e poi memorizzati nell'internal storage così l'app è più veloce dal secondo avvio
@@ -107,20 +71,15 @@ public class MainActivity extends AppCompatActivity {
         String documento1 = "documento1.pdf";
         String documento2 = "documento2.pdf";
 
-        pdfFile = new File(getFilesDir(), documento);
-        pdfFile1 = new File(getFilesDir(), documento1);
-        pdfFile2 = new File(getFilesDir(), documento2);
+        File pdfFile = new File(getFilesDir(), documento);
+        File pdfFile1 = new File(getFilesDir(), documento1);
+        File pdfFile2 = new File(getFilesDir(), documento2);
         if(!pdfFile.exists() && !pdfFile1.exists() && !pdfFile2.exists()){
             //showToast("Il documento non esiste" + pdfFile.exists() + pdfFile1.exists() + pdfFile2.exists());
             creaPdf("documento.pdf");
             createPdf1("documento2.pdf");
             createPdf2("documento1.pdf");
-        }else{
-
         }
-        creaPdf("documento.pdf");
-        createPdf1("documento2.pdf");
-        createPdf2("documento1.pdf");
 
         btn = findViewById(R.id.pdf_button);
 
@@ -136,193 +95,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (inputSource == InputSource.CAMERA) {
-            // Restarts the camera and the opengl surface rendering.
-            cameraInput = new CameraInput(this);
-            cameraInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-            glSurfaceView.post(this::startCamera);
-            glSurfaceView.setVisibility(View.VISIBLE);
-        } else if (inputSource == InputSource.VIDEO) {
-            videoInput.resume();
-        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        if (inputSource == InputSource.CAMERA) {
-            glSurfaceView.setVisibility(View.GONE);
-            cameraInput.close();
-        } else if (inputSource == InputSource.VIDEO) {
-            videoInput.pause();
-        }
-    }
-
-    private Bitmap downscaleBitmap(Bitmap originalBitmap) {
-        double aspectRatio = (double) originalBitmap.getWidth() / originalBitmap.getHeight();
-        int width = imageView.getWidth();
-        int height = imageView.getHeight();
-        if (((double) imageView.getWidth() / imageView.getHeight()) > aspectRatio) {
-            width = (int) (height * aspectRatio);
-        } else {
-            height = (int) (width / aspectRatio);
-        }
-        return Bitmap.createScaledBitmap(originalBitmap, width, height, false);
-    }
-
-    private Bitmap rotateBitmap(Bitmap inputBitmap, InputStream imageData) throws IOException {
-        int orientation =
-                new ExifInterface(imageData)
-                        .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        if (orientation == ExifInterface.ORIENTATION_NORMAL) {
-            return inputBitmap;
-        }
-        Matrix matrix = new Matrix();
-        switch (orientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90:
-                matrix.postRotate(90);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_180:
-                matrix.postRotate(180);
-                break;
-            case ExifInterface.ORIENTATION_ROTATE_270:
-                matrix.postRotate(270);
-                break;
-            default:
-                matrix.postRotate(0);
-        }
-        return Bitmap.createBitmap(
-                inputBitmap, 0, 0, inputBitmap.getWidth(), inputBitmap.getHeight(), matrix, true);
-    }
-
-    /**
-     * Sets up the UI components for the static image demo.
-     */
-    private void setupStaticImageDemoUiComponents() {
-        // The Intent to access gallery and read images as bitmap.
-        imageGetter =
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            Intent resultIntent = result.getData();
-                            if (resultIntent != null) {
-                                if (result.getResultCode() == RESULT_OK) {
-                                    Bitmap bitmap = null;
-                                    try {
-                                        bitmap =
-                                                downscaleBitmap(
-                                                        MediaStore.Images.Media.getBitmap(
-                                                                this.getContentResolver(), resultIntent.getData()));
-                                    } catch (IOException e) {
-                                        Log.e(TAG, "Bitmap reading error:" + e);
-                                    }
-                                    try {
-                                        InputStream imageData =
-                                                this.getContentResolver().openInputStream(resultIntent.getData());
-                                        bitmap = rotateBitmap(bitmap, imageData);
-                                    } catch (IOException e) {
-                                        Log.e(TAG, "Bitmap rotation error:" + e);
-                                    }
-                                    if (bitmap != null) {
-                                        hands.send(bitmap);
-                                    }
-                                }
-                            }
-                        });
-        Button loadImageButton = findViewById(R.id.button_load_picture);
-        loadImageButton.setOnClickListener(
-                v -> {
-                    if (inputSource != InputSource.IMAGE) {
-                        stopCurrentPipeline();
-                        setupStaticImageModePipeline();
-                    }
-                    // Reads images from gallery.
-                    Intent pickImageIntent = new Intent(Intent.ACTION_PICK);
-                    pickImageIntent.setDataAndType(MediaStore.Images.Media.INTERNAL_CONTENT_URI, "image/*");
-                    imageGetter.launch(pickImageIntent);
-                });
-        imageView = new HandsResultImageView(this);
-    }
-
-    /**
-     * Sets up core workflow for static image mode.
-     */
-    private void setupStaticImageModePipeline() {
-        this.inputSource = InputSource.IMAGE;
-        // Initializes a new MediaPipe Hands solution instance in the static image mode.
-        hands =
-                new Hands(
-                        this,
-                        HandsOptions.builder()
-                                .setStaticImageMode(true)
-                                .setMaxNumHands(2)
-                                .setRunOnGpu(RUN_ON_GPU)
-                                .build());
-
-        // Connects MediaPipe Hands solution to the user-defined HandsResultImageView.
-        hands.setResultListener(
-                handsResult -> {
-                    //logWristLandmark(handsResult, /*showPixelValues=*/ true);
-                    imageView.setHandsResult(handsResult);
-                    runOnUiThread(() -> imageView.update());
-                });
-        hands.setErrorListener((message, e) -> Log.e(TAG, "MediaPipe Hands error:" + message));
-
-        // Updates the preview layout.
-        FrameLayout frameLayout = findViewById(R.id.preview_display_layout);
-        frameLayout.removeAllViewsInLayout();
-        imageView.setImageDrawable(null);
-        frameLayout.addView(imageView);
-        imageView.setVisibility(View.VISIBLE);
-    }
-
-    /**
-     * Sets up the UI components for the video demo.
-     */
-    private void setupVideoDemoUiComponents() {
-        // The Intent to access gallery and read a video file.
-        videoGetter =
-                registerForActivityResult(
-                        new ActivityResultContracts.StartActivityForResult(),
-                        result -> {
-                            Intent resultIntent = result.getData();
-                            if (resultIntent != null) {
-                                if (result.getResultCode() == RESULT_OK) {
-                                    glSurfaceView.post(
-                                            () ->
-                                                    videoInput.start(
-                                                            this,
-                                                            resultIntent.getData(),
-                                                            hands.getGlContext(),
-                                                            glSurfaceView.getWidth(),
-                                                            glSurfaceView.getHeight()));
-                                }
-                            }
-                        });
-        Button loadVideoButton = findViewById(R.id.button_load_video);
-        loadVideoButton.setOnClickListener(
-                v -> {
-                    stopCurrentPipeline();
-                    setupStreamingModePipeline(InputSource.VIDEO);
-                    // Reads video from gallery.
-                    Intent pickVideoIntent = new Intent(Intent.ACTION_PICK);
-                    pickVideoIntent.setDataAndType(MediaStore.Video.Media.INTERNAL_CONTENT_URI, "video/*");
-                    videoGetter.launch(pickVideoIntent);
-                });
     }
 
     /**
      * Sets up the UI components for the live demo with camera input.
      */
-    public void setupLiveDemoUiComponents() {
+    protected void setupLiveDemoUiComponents() {
         Button startCameraButton = findViewById(R.id.button_start_camera);
         startCameraButton.setOnClickListener(
                 v -> {
-                    if (inputSource == InputSource.CAMERA) {
-                        return;
-                    }
-                    stopCurrentPipeline();
-                    setupStreamingModePipeline(InputSource.CAMERA);
+                    super.setupLiveDemoUiComponents();
+                    this.setupStreamingModePipeline(InputSource.CAMERA);
                 });
     }
 
@@ -330,93 +118,20 @@ public class MainActivity extends AppCompatActivity {
      * Sets up core workflow for streaming mode.
      */
     private void setupStreamingModePipeline(InputSource inputSource) {
-        HandsResultGlRenderer handsResultGlRenderer = new HandsResultGlRenderer();
 
-        ThumbUpGesture thumbUpGesture = new ThumbUpGesture();
-        PinchGesture pinchGesture = new PinchGesture();
-        ScrollPageGesture scrollPageGesture = new ScrollPageGesture();
-        CrabGesture crabGesture = new CrabGesture();
-        FourGesture fourGesture = new FourGesture();
-        ThreeGesture threeGesture = new ThreeGesture();
+        super.firstSetupStreamingModePipeline(inputSource);
 
-        TextView wristLog = new TextView(this);
-        wristLog.setText(String.valueOf(handsResultGlRenderer.log));
-        wristLog.setTextSize(18);
-        wristLog.setTextColor(Color.RED);
-        wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
-        TextView thumbUp = new TextView(this);
-        thumbUp.setText("Thumb up");
-        thumbUp.setTextSize(18);
-        thumbUp.setTextColor(Color.RED);
-        TextView pinch = new TextView(this);
-        pinch.setText("Pinch");
-        pinch.setTextSize(18);
-        pinch.setTextColor(Color.RED);
-        TextView scroll = new TextView(this);
-        scroll.setText("Scroll");
-        scroll.setTextSize(18);
-        scroll.setTextColor(Color.RED);
-        pinch.setTextColor(Color.RED);
-        TextView crab = new TextView(this);
-        crab.setText("Crab");
-        crab.setTextSize(18);
-        crab.setTextColor(Color.RED);
-        TextView openHand = new TextView(this);
-        openHand.setText("Open hand");
-        openHand.setTextSize(18);
-        openHand.setTextColor(Color.RED);
-        TextView treHand = new TextView(this);
-        treHand.setText("3 Hand");
-        treHand.setTextSize(18);
-        treHand.setTextColor(Color.RED);
+        LinearLayout gestureChecksLayout = scritturaLog();
 
-
-        LinearLayout gestureChecksLayout = new LinearLayout(this);
-        gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
-        gestureChecksLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
-
-        //aggiungere TextView varie a gestureChecksLayout
-        gestureChecksLayout.addView(wristLog);
-        gestureChecksLayout.addView(thumbUp);
-        gestureChecksLayout.addView(pinch);
-        gestureChecksLayout.addView(crab);
-        gestureChecksLayout.addView(openHand);
-        gestureChecksLayout.addView(treHand);
-        gestureChecksLayout.addView(scroll);
-
-        this.inputSource = inputSource;
-        // Initializes a new MediaPipe Hands solution instance in the streaming mode.
-        hands =
-                new Hands(
-                        this,
-                        HandsOptions.builder()
-                                .setStaticImageMode(false)
-                                .setMaxNumHands(2)
-                                .setRunOnGpu(RUN_ON_GPU)
-                                .build());
-        hands.setErrorListener((message, e) -> Log.e(TAG, "MediaPipe Hands error:" + message));
-
-        if (inputSource == InputSource.CAMERA) {
-            cameraInput = new CameraInput(this);
-            cameraInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-        } else if (inputSource == InputSource.VIDEO) {
-            videoInput = new VideoInput(this);
-            videoInput.setNewFrameListener(textureFrame -> hands.send(textureFrame));
-        }
-
-        // Initializes a new Gl surface view with a user-defined HandsResultGlRenderer.
-        glSurfaceView =
-                new SolutionGlSurfaceView<>(this, hands.getGlContext(), hands.getGlMajorVersion());
-        glSurfaceView.setSolutionResultRenderer(handsResultGlRenderer);
-        glSurfaceView.setRenderInputImage(true);
         hands.setResultListener(
                 handsResult -> {
                     //logWristLandmark(handsResult, /*showPixelValues=*/ false);
                     MainActivity.this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
                             wristLog.setText(handsResultGlRenderer.log);
-                            int scrollGestureCheck = scrollPageGesture.checGesture(handsResult.multiHandLandmarks());
+                            int scrollGestureCheck = scrollPageGesture.checkGesture(handsResult.multiHandLandmarks());
                             boolean thumbUpGestureCheck = thumbUpGesture.checkGesture(handsResult);
                             boolean pinchGestureCheck = pinchGesture.checkGesture(handsResult);
                             boolean crabGestureCheck = crabGesture.checkGesture(handsResult);
@@ -461,91 +176,15 @@ public class MainActivity extends AppCompatActivity {
                             }else{
                                 treHand.setTextColor(Color.RED);
                             }
+
+
                         }
                     });
                     glSurfaceView.setRenderData(handsResult);
                     glSurfaceView.requestRender();
                 });
 
-
-        // The runnable to start camera after the gl surface view is attached.
-        // For video input source, videoInput.start() will be called when the video uri is available.
-        if (inputSource == InputSource.CAMERA) {
-            glSurfaceView.post(this::startCamera);
-        }
-
-        // Updates the preview layout.
-        FrameLayout frameLayout = findViewById(R.id.preview_display_layout);
-        imageView.setVisibility(View.GONE);
-        frameLayout.removeAllViewsInLayout();
-        frameLayout.addView(glSurfaceView);
-
-        // add linear layout view to frame layout
-        frameLayout.addView(gestureChecksLayout);
-
-        glSurfaceView.setVisibility(View.VISIBLE);
-        frameLayout.requestLayout();
-    }
-
-    private void startCamera() {
-        cameraInput.start(
-                this,
-                hands.getGlContext(),
-                CameraInput.CameraFacing.FRONT,
-                glSurfaceView.getWidth(),
-                glSurfaceView.getHeight());
-    }
-
-    private void stopCurrentPipeline() {
-        if (cameraInput != null) {
-            cameraInput.setNewFrameListener(null);
-            cameraInput.close();
-        }
-        if (videoInput != null) {
-            videoInput.setNewFrameListener(null);
-            videoInput.close();
-        }
-        if (glSurfaceView != null) {
-            glSurfaceView.setVisibility(View.GONE);
-        }
-        if (hands != null) {
-            hands.close();
-        }
-    }
-
-    private void logWristLandmark(HandsResult result, boolean showPixelValues) {
-        if (result.multiHandLandmarks().isEmpty()) {
-            return;
-        }
-        NormalizedLandmark wristLandmark =
-                result.multiHandLandmarks().get(0).getLandmarkList().get(HandLandmark.WRIST);
-        // For Bitmaps, show the pixel values. For texture inputs, show the normalized coordinates.
-        if (showPixelValues) {
-            int width = result.inputBitmap().getWidth();
-            int height = result.inputBitmap().getHeight();
-            Log.i(
-                    TAG,
-                    String.format(
-                            "MediaPipe Hand wrist coordinates (pixel values): x=%f, y=%f",
-                            wristLandmark.getX() * width, wristLandmark.getY() * height));
-        } else {
-            Log.i(
-                    TAG,
-                    String.format(
-                            "MediaPipe Hand wrist normalized coordinates (value range: [0, 1]): x=%f, y=%f",
-                            wristLandmark.getX(), wristLandmark.getY()));
-        }
-        if (result.multiHandWorldLandmarks().isEmpty()) {
-            return;
-        }
-        Landmark wristWorldLandmark =
-                result.multiHandWorldLandmarks().get(0).getLandmarkList().get(HandLandmark.WRIST);
-        Log.i(
-                TAG,
-                String.format(
-                        "MediaPipe Hand wrist world coordinates (in meters with the origin at the hand's"
-                                + " approximate geometric center): x=%f m, y=%f m, z=%f m",
-                        wristWorldLandmark.getX(), wristWorldLandmark.getY(), wristWorldLandmark.getZ()));
+        super.lastSetupStreamingModePipeline(inputSource, gestureChecksLayout);
     }
 
     private void creaPdf(String documento){
@@ -632,7 +271,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return;
     }
 
     private void showToast(String message) {
@@ -739,7 +377,6 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return;
     }
 
     private void createPdf1(String documento){
@@ -805,6 +442,59 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return;
+    }
+
+    private LinearLayout scritturaLog(){
+        wristLog = new TextView(this);
+        wristLog.setText(String.valueOf(handsResultGlRenderer.log));
+        wristLog.setTextSize(18);
+        wristLog.setTextColor(Color.RED);
+        wristLog.setGravity(Gravity.BOTTOM | Gravity.LEFT);
+
+        thumbUp = new TextView(this);
+        thumbUp.setText("Thumb up");
+        thumbUp.setTextSize(18);
+        thumbUp.setTextColor(Color.RED);
+
+        pinch = new TextView(this);
+        pinch.setText("Pinch");
+        pinch.setTextSize(18);
+        pinch.setTextColor(Color.RED);
+
+        scroll = new TextView(this);
+        scroll.setText("Scroll");
+        scroll.setTextSize(18);
+        scroll.setTextColor(Color.RED);
+        pinch.setTextColor(Color.RED);
+
+        crab = new TextView(this);
+        crab.setText("Crab");
+        crab.setTextSize(18);
+        crab.setTextColor(Color.RED);
+
+        openHand = new TextView(this);
+        openHand.setText("Open hand");
+        openHand.setTextSize(18);
+        openHand.setTextColor(Color.RED);
+
+        treHand = new TextView(this);
+        treHand.setText("3 Hand");
+        treHand.setTextSize(18);
+        treHand.setTextColor(Color.RED);
+
+        LinearLayout gestureChecksLayout = new LinearLayout(this);
+        gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
+        gestureChecksLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
+
+        //aggiungere TextView varie a gestureChecksLayout
+        gestureChecksLayout.addView(wristLog);
+        gestureChecksLayout.addView(thumbUp);
+        gestureChecksLayout.addView(pinch);
+        gestureChecksLayout.addView(crab);
+        gestureChecksLayout.addView(openHand);
+        gestureChecksLayout.addView(treHand);
+        gestureChecksLayout.addView(scroll);
+
+        return gestureChecksLayout;
     }
 }

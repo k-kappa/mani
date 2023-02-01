@@ -15,10 +15,8 @@ import java.util.List;
 
 public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordinate bidimensionali
 
-    private static final String NAME = "Crab";
-    private static final int GESTURE_ID = 3;
-    private ArrayList<Float> delta;//x e y
-    private ArrayList<Float> puntiPrec;//x e y del frame precedente
+    private final ArrayList<Float> delta;//x e y
+    private final ArrayList<Float> puntiPrec;//x e y del frame precedente
     private boolean firstTime;
 
     public CrabGesture() {
@@ -77,14 +75,6 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
         return false;
     }
 
-    public ArrayList<Float> getPuntiPrec() {
-        return this.puntiPrec;
-    }
-
-    public ArrayList<Float> getDelta() {
-        return delta;
-    }
-
     public float getVettoreX() {
         if (delta.size() > 2) {
             float temp = delta.get(0);
@@ -112,18 +102,4 @@ public class CrabGesture implements IHandGesture {//qui lavoriamo solo su coordi
         firstTime = true;
     }
 
-    //@Override
-    public String getName() {
-        return this.NAME;
-    }
-
-    //@Override
-    public int getGestureId() {
-        return this.GESTURE_ID;
-    }
-
-    //@Override
-    public GestureType getGestureType() {
-        return GestureType.STATIC;
-    }
 }

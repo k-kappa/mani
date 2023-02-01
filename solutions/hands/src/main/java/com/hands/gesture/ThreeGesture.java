@@ -13,12 +13,6 @@ import java.util.List;
 
 public class ThreeGesture implements IHandGesture {
 
-    private static final String NAME = "THUMB_UP";
-    private static final int GESTURE_ID = 1;
-
-    private static final long timer = 5000;
-
-    @Override
     public boolean checkGesture(HandsResult handsResult) {
 
         List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
@@ -53,18 +47,4 @@ public class ThreeGesture implements IHandGesture {
         return false;
     }
 
-    @Override
-    public String getName() {
-        return this.NAME;
-    }
-
-    @Override
-    public int getGestureId() {
-        return this.GESTURE_ID;
-    }
-
-    @Override
-    public GestureType getGestureType() {
-        return GestureType.STATIC;
-    }
 }

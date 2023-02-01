@@ -13,10 +13,6 @@ import java.util.List;
 
 public class FourGesture implements IHandGesture {
 
-    private static final String NAME = "OPEN_HAND";
-    private static final int GESTURE_ID = 4;
-
-    @Override
     public boolean checkGesture(HandsResult handsResult) {
 
         List<LandmarkProto.LandmarkList> landmarkList = handsResult.multiHandWorldLandmarks();
@@ -50,20 +46,6 @@ public class FourGesture implements IHandGesture {
         return false;
     }
 
-    @Override
-    public String getName() {
-        return this.NAME;
-    }
-
-    @Override
-    public int getGestureId() {
-        return this.GESTURE_ID;
-    }
-
-    @Override
-    public GestureType getGestureType() {
-        return GestureType.STATIC;
-    }
 }
 
 
