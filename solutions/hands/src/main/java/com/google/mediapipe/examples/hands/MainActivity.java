@@ -66,6 +66,12 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
+    static {
+        System.loadLibrary("hands");
+    }
+
+    public native String stringFromJNI();
+
     private Hands hands;
     // Run the pipeline and the model inference on GPU or CPU.
     private static final boolean RUN_ON_GPU = true;
@@ -370,6 +376,7 @@ public class MainActivity extends AppCompatActivity {
         treHand.setTextSize(18);
         treHand.setTextColor(Color.RED);
 
+
         LinearLayout gestureChecksLayout = new LinearLayout(this);
         gestureChecksLayout.setOrientation(LinearLayout.VERTICAL);
         gestureChecksLayout.setGravity(Gravity.BOTTOM | Gravity.RIGHT);
@@ -381,9 +388,6 @@ public class MainActivity extends AppCompatActivity {
         gestureChecksLayout.addView(crab);
         gestureChecksLayout.addView(openHand);
         gestureChecksLayout.addView(treHand);
-
-        //gestureChecksLayout.addView(thumbUp);
-        //gestureChecksLayout.addView(pinch);
         gestureChecksLayout.addView(scroll);
 
         this.inputSource = inputSource;
