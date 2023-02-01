@@ -13,7 +13,6 @@ public class Utils {
 
     private static native double get2DistanceWrap(double[] v1, double[] v2);
     private static native double get3DistanceWrap(double[] v1, double[] v2);
-    private static native boolean isBetweenDoubleWrap(double value, double low, double high);
     private static native boolean isBetweenIntWrap(int value, int low, int high);
     private static native boolean indiceMedioAltiWrap(double[] y);
 
@@ -36,18 +35,9 @@ public class Utils {
         return getDistance(point1.getX(), point1.getY(), point1.getZ(), point2.getX(), point2.getY(), point2.getZ());
     }
 
-    public static boolean isBetween(double value, double low, double high) {
-        return isBetweenDoubleWrap(value, low, high);
-        //return value >= low && value <= high;
-    }
-
     public static boolean isBetween(int value, int low, int high) {
         return isBetweenIntWrap(value, low, high);
         //return value >= low && value <= high;
-    }
-
-    public static boolean isInsideSphere(float point_x, float point_y, float point_z, float centre_X, float centre_y, float centre_z, float radius) {
-        return (point_x - centre_X) * (point_x - centre_X) + (point_y - centre_y) * (point_y - centre_y) + (point_z + centre_z) * (point_z + centre_z) < radius * radius;
     }
 
     public static boolean checkGesture(List<HandPoints> relevantPoints, HashMap<HandPoints, Integer> targetLevels, HashMap<HandPoints, Integer> fingerLevels, int error) {

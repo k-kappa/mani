@@ -1,7 +1,5 @@
 package com.hands.gesture;
 
-import android.util.Log;
-
 import com.google.mediapipe.formats.proto.LandmarkProto;
 import com.hands.utils.HandPoints;
 import com.hands.utils.TimedPoint;
@@ -11,34 +9,33 @@ import com.hands.utils.VectorUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScrollPageGesture{
+public class ScrollPageGesture {
 
     private List<TimedPoint> lastTimedPoints = new ArrayList<TimedPoint>();
     private float last8landmarks = 0;
     private final int puntaIndice = HandPoints.INDEX_TIP.getValue();
 
 
-    public int scorrimento(List<LandmarkProto.NormalizedLandmark> landmarks){
+    public int scorrimento(List<LandmarkProto.NormalizedLandmark> landmarks) {
 
         List<TimedPoint> t = new ArrayList<TimedPoint>();
         TimedPoint temp = new TimedPoint();
 
-        if (Utils.indiceMedioAlti(landmarks)){
-            for (int i = 0; i <= 20; i++){
-                t.add(i, temp.set(landmarks.get(i).getX(),landmarks.get(i).getY()));
+        if (Utils.indiceMedioAlti(landmarks)) {
+            for (int i = 0; i <= 20; i++) {
+                t.add(i, temp.set(landmarks.get(i).getX(), landmarks.get(i).getY()));
             }
 
-            if (!lastTimedPoints.isEmpty()){
-                if (last8landmarks < 0.42 && last8landmarks > 0.22){
-                    if ((lastTimedPoints.get(puntaIndice).velocityFrom(t.get(puntaIndice)))*10000 > 20 && landmarks.get(puntaIndice).getX() - last8landmarks > 0.2){
+            if (!lastTimedPoints.isEmpty()) {
+                if (last8landmarks < 0.42 && last8landmarks > 0.22) {
+                    if ((lastTimedPoints.get(puntaIndice).velocityFrom(t.get(puntaIndice))) * 10000 > 20 && landmarks.get(puntaIndice).getX() - last8landmarks > 0.2) {
                         lastTimedPoints = t;
                         last8landmarks = landmarks.get(puntaIndice).getX();
                         return 1;
 
                     }
-                }
-                else if (last8landmarks > 0.58 && last8landmarks < 0.78){
-                    if ((lastTimedPoints.get(puntaIndice).velocityFrom(t.get(puntaIndice)))*10000 > 20 && last8landmarks - landmarks.get(puntaIndice).getX() > 0.2){
+                } else if (last8landmarks > 0.58 && last8landmarks < 0.78) {
+                    if ((lastTimedPoints.get(puntaIndice).velocityFrom(t.get(puntaIndice))) * 10000 > 20 && last8landmarks - landmarks.get(puntaIndice).getX() > 0.2) {
                         lastTimedPoints = t;
                         last8landmarks = landmarks.get(puntaIndice).getX();
                         return 2;
@@ -55,7 +52,6 @@ public class ScrollPageGesture{
 
     public int checkGesture(List<LandmarkProto.NormalizedLandmarkList> landmarkList) {
         if (landmarkList.size() > 0) {
-            int errore = 8;
             //1 ->destra 2->sinistra
 
             List<Integer> errors = new ArrayList<>(2);
@@ -68,7 +64,6 @@ public class ScrollPageGesture{
             pollice.add(landmarkList.get(0).getLandmark(HandPoints.THUMB_TIP.getValue()));
             boolean checkPolliceStorto = !VectorUtils.checkInLineNormalized(pollice, errors);
 
-            Log.d("checkPolliceStorto", String.valueOf(checkPolliceStorto));
             return scorrimento(landmarkList.get(0).getLandmarkList()) - (checkPolliceStorto ? 10 : 0);
         }
         return -1;

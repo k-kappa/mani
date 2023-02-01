@@ -7,29 +7,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.barteksc.pdfviewer.PDFView;
-import com.google.mediapipe.solutioncore.CameraInput;
-import com.google.mediapipe.solutioncore.SolutionGlSurfaceView;
-import com.google.mediapipe.solutioncore.VideoInput;
-import com.google.mediapipe.solutions.hands.Hands;
-import com.google.mediapipe.solutions.hands.HandsOptions;
-import com.google.mediapipe.solutions.hands.HandsResult;
-import com.hands.gesture.CrabGesture;
-import com.hands.gesture.FourGesture;
-import com.hands.gesture.PinchGesture;
-import com.hands.gesture.ScrollPageGesture;
-import com.hands.gesture.ThumbUpGesture;
-import com.hands.gesture.ThreeGesture;
 
 import java.io.File;
 import java.net.URISyntaxException;
@@ -64,27 +48,22 @@ public class PdfActivity extends BaseActivity {
         share = findViewById(R.id.condividi);
         scrollDown = findViewById(R.id.scroll_down);
 
-        pdfView = (PDFView) findViewById(R.id.pdf_viewer);
+        pdfView = findViewById(R.id.pdf_viewer);
         final LinearLayout buttonBar = findViewById(R.id.button_bar);
 
         //caricamento del pdf
-        a = 0;
-        if (a == 0) {
-            pdfFile = new File(getFilesDir(), "documento1.pdf");
-            //System.out.println("PDF FILE: " + pdfFile);
-            //showToast("PDF FILE: " + pdfFile);
-            pdfView.fromFile(pdfFile)
-                    .enableSwipe(true)
-                    .swipeHorizontal(false)
-                    .enableDoubletap(true)
-                    .defaultPage(0)
-                    .load();
-            pdfView.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setDuration(1000)
-                    .start();
-        }
+        pdfFile = new File(getFilesDir(), "documento1.pdf");
+        pdfView.fromFile(pdfFile)
+                .enableSwipe(true)
+                .swipeHorizontal(false)
+                .enableDoubletap(true)
+                .defaultPage(0)
+                .load();
+        pdfView.animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(1000)
+                .start();
 
 
         //collego bottoni a funzioni
@@ -191,8 +170,6 @@ public class PdfActivity extends BaseActivity {
                                 float x = crabGesture.getVettoreX() * 500;
                                 float y = crabGesture.getVettoreY() * 500;
                                 pdfView.moveRelativeTo(x, y);
-                                //showToast("Crab");
-                                //Log.println(Log.DEBUG,"debug",x+" "+ y);
                             }
 
                             if (checkOpenHand) {
@@ -266,10 +243,6 @@ public class PdfActivity extends BaseActivity {
                                         dialog.dismiss();
                                     }
                                 });
-                            /*if (thumbUpGesture.checkGesture(handsResult.multiHandWorldLandmarks())) {
-                                pdfView.jumpTo(pdfView.getPageAtPositionOffset(0), true);
-                                showToast("thumb up");
-                            }*/
 
                                 pdf3.setOnClickListener(new View.OnClickListener() {
                                     @Override

@@ -20,8 +20,6 @@ public class PinchGesture implements IHandGesture {
         if (landmarkList.size() > 0) {
 
             HashMap<HandPoints, Integer> targetLevels = new HashMap<HandPoints, Integer>();
-            //targetLevels.put(HandPoints.THUMB_TIP, 52);
-            //targetLevels.put(HandPoints.INDEX_TIP, 60);
             targetLevels.put(HandPoints.MIDDLE_TIP, 29);
             targetLevels.put(HandPoints.RING_TIP, 27);
             targetLevels.put(HandPoints.PINKY_TIP, 29);

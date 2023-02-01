@@ -17,28 +17,13 @@ package com.google.mediapipe.examples.hands;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.mediapipe.solutioncore.CameraInput;
-import com.google.mediapipe.solutioncore.SolutionGlSurfaceView;
-import com.google.mediapipe.solutions.hands.Hands;
-import com.google.mediapipe.solutions.hands.HandsOptions;
-import com.google.mediapipe.solutions.hands.HandsResult;
-import com.hands.gesture.CrabGesture;
-import com.hands.gesture.FourGesture;
-import com.hands.gesture.PinchGesture;
-import com.hands.gesture.ScrollPageGesture;
-import com.hands.gesture.ThumbUpGesture;
-import com.hands.gesture.ThreeGesture;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
@@ -139,8 +124,6 @@ public class MainActivity extends BaseActivity {
                             boolean threeHandCheck = threeGesture.checkGesture(handsResult);
                             if (thumbUpGestureCheck) {
                                 thumbUp.setTextColor(Color.GREEN);
-                                //Intent intent1 = new Intent(MainActivity.this, PdfActivity.class);
-                                //startActivity(intent1);
                             } else {
                                 thumbUp.setTextColor(Color.RED);
                             }

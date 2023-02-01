@@ -1,19 +1,11 @@
 package com.google.mediapipe.examples.hands;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.mediapipe.solutioncore.CameraInput;
@@ -27,15 +19,8 @@ import com.hands.gesture.PinchGesture;
 import com.hands.gesture.ScrollPageGesture;
 import com.hands.gesture.ThreeGesture;
 import com.hands.gesture.ThumbUpGesture;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.net.URISyntaxException;
 
 public class BaseActivity extends AppCompatActivity {
 

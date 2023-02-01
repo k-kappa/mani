@@ -130,14 +130,6 @@ Java_com_hands_utils_Utils_isBetweenIntWrap(JNIEnv *env, jclass clazz,
 
     return value >= low && value <= high;
 }
-extern "C" JNIEXPORT jboolean JNICALL
-Java_com_hands_utils_Utils_isBetweenDoubleWrap(JNIEnv *env, jclass clazz,
-                                               jdouble value,
-                                               jdouble low,
-                                               jdouble high) {
-
-    return value >= low && value <= high;
-}
 
 // indiceMedioAlti riceve un array di double (coordinate Y dei 21 landmarks)
 extern "C" JNIEXPORT jboolean JNICALL
