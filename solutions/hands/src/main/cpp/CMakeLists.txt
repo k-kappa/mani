@@ -16,7 +16,7 @@ project("hands")
 # Gradle automatically packages shared libraries with your APK.
 
 add_library( # Sets the name of the library.
-             vectorUtils
+             hands
 
              # Sets the library as a shared library.
              SHARED
