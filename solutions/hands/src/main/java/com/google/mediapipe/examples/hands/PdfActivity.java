@@ -147,6 +147,13 @@ public class PdfActivity extends BaseActivity {
 
                                 lastExecutionTime = System.currentTimeMillis();
                                 Intent emailIntent = new Intent(Intent.ACTION_SEND);
+                                emailIntent.setType("pdf/application");
+                                emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"destinatario@example.com"});
+                                emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
+                                emailIntent.putExtra(Intent.EXTRA_TEXT, "Body email");
+                                //da aggiungere riga per condividere file
+                                startActivity(Intent.createChooser(emailIntent, "Invia email..."));
+                                /*Intent emailIntent = new Intent(Intent.ACTION_SEND);
                                 emailIntent.setType("application/pdf");
                                 emailIntent.putExtra(Intent.EXTRA_EMAIL, new String[]{"destinatario@example.com"});
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
@@ -162,7 +169,7 @@ public class PdfActivity extends BaseActivity {
                                 emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Oggetto email");
                                 emailIntent.putExtra(Intent.EXTRA_TEXT, "Body email");
                                 emailIntent.putExtra(Intent.EXTRA_STREAM, pdfFile);
-                                startActivity(Intent.createChooser(emailIntent, "Invia email..."));
+                                startActivity(Intent.createChooser(emailIntent, "Invia email..."));*/
                             }
 
 
