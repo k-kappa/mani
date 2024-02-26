@@ -1,3 +1,9 @@
+Progetto di gruppo realizzato per l'esame di Sistemi Digitali M della Laurea Magistrale in Ingegneria Informatica a Bologna.
+Membri gruppo:
+Riccardo Barbieri 
+Leonardo Rubino
+Gabriele Tassinari    
+Krystian Koss        koss.krystian@gmail.com
 ![alt text](https://github.com/k-kappa/mani/blob/master/HandWave/HandWave-01.png?raw=true)
 ![alt text](https://github.com/k-kappa/mani/blob/master/HandWave/HandWave-02.png?raw=true)
 ![alt text](https://github.com/k-kappa/mani/blob/master/HandWave/HandWave-03.png?raw=true)
